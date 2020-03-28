@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <unistd.h>
-#include "../libft/libft.h"
+#include "libft.h"
 
 typedef struct s_dimention {
 	int		x;
