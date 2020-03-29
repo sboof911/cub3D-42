@@ -1,5 +1,26 @@
 #include "cub3d.h"
 
+int		nowall(int key)
+{
+	int	i;
+	int	j;
+	int	s;
+	int	x;
+	int	y;
+
+	if (key == 115)
+		s = -2;
+	if (key == 119)
+		s = 2;
+	x = player->x + (s * cos ((rotation + 30) * (M_PI / 180)));
+	y = player->y + (s * sin ((rotation + 30) * (M_PI / 180)));
+	i = y / 30;
+	j = x / 30;
+	if (la_map[i][j] != '1')
+		return (1);
+	return (0);
+}
+
 void	draw_player(unsigned int long long str)
 {
 	float 	i;
@@ -46,30 +67,36 @@ int		direction_player(int key, void *param)
 	{
 		printf("la Rotation est : %d****** \n", rotation);
 		draw_player(0x000000);
-		player->x += -2 * cos ((rotation + 30) * (M_PI / 180));
-		player->y += -2 * sin ((rotation) * (M_PI / 180));
+		//player->x += -2 * cos ((rotation) * (M_PI / 180));
+		//player->y += -2 * sin ((rotation + 30) * (M_PI / 180));
 		draw_player(0xFFFFFF);
 	}
 	if (key == 100) // right
 	{
 		printf("la Rotation est : %d****** \n", rotation);
 		draw_player(0x000000);
-		player->x += 2 * cos ((rotation + 30) * (M_PI / 180));
-		player->y += 2 * sin ((rotation) * (M_PI / 180));
+		//player->x += 2 * cos ((rotation) * (M_PI / 180));
+		//player->y += 2 * sin ((rotation + 30) * (M_PI / 180));
 		draw_player(0xFFFFFF);
 	}
 	if (key == 115) // down
 	{
 		draw_player(0x000000);
-		player->x += -2 * cos ((rotation + 30) * (M_PI / 180));
-		player->y += -2 * sin ((rotation) * (M_PI / 180));
+		if (nowall(key) == 1)
+		{
+			player->x += -2 * cos ((rotation + 30) * (M_PI / 180));
+			player->y += -2 * sin ((rotation + 30) * (M_PI / 180));
+		}
 		draw_player(0xFFFFFF);
 	}
 	if (key == 119) // up
 	{
 		draw_player(0x000000);
-		player->x += 2 * cos ((rotation + 30) * (M_PI / 180));
-		player->y += 2 * sin ((rotation) * (M_PI / 180));
+		if (nowall(key) == 1)
+		{
+			player->x += 2 * cos ((rotation + 30) * (M_PI / 180));
+			player->y += 2 * sin ((rotation + 30) * (M_PI / 180));
+		}
 		draw_player(0xFFFFFF);
 	}
 	if (key == 65307) // echap
@@ -86,7 +113,6 @@ int		direction_player(int key, void *param)
 		direction = 1;
 		draw_player(0xFFFFFF);	
 	}
-	printf("THE KEY IS : %d\n\n\n", key);
 	return(0);
 }
 
