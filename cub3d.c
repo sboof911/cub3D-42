@@ -31,11 +31,14 @@ void	draw_player(unsigned int long long str)
 	K = 1;
 	moveSpeed = 2;
 	rotationAngle = M_PI / 180;
-	 if (str == 0x000000)
+	if (str == 0x000000)
 	 	K = 0;
 	rotationSpeed = rotation + (2 * turn_direction * K);
 	k = rotationSpeed;
 	rotation = k;
+	if (rotation < 0)
+		rotation += 360;
+	rotation = rotation % 360;
 	if (player->x == 0 && player->y == 0)
 	{
 		player->x = position->x;
@@ -124,6 +127,30 @@ void	ft_draw_map(void)
 	}
 }
 
+// int		check_wall(int i, int j)
+// {
+// 	int		vision;
+
+// 	vision = 0;
+// 	if (rotation >= 0 && rotation < 90)
+// 		vision = 1;
+// 	if (rotation >= 90 && rotation < 180)
+// 		vision = 2;
+// 	if (rotation >= 180 && rotation < 270)
+// 		vision = 3;
+// 	if (rotation >= 270 && rotation < 360)
+// 		vision = 4;
+// 	if (vision == 1 && la_map[i][j - 1] == '1' && la_map[i + 1][j] == '1')
+// 		return (1);
+// 	if (vision == 2 && la_map[i][j + 1] == '1' && la_map[i + 1][j] == '1')
+// 		return (1);
+// 	if (vision == 3 && la_map[i][j + 1] == '1' && la_map[i - 1][j] == '1')
+// 		return (1);
+// 	if (vision == 4 && la_map[i - 1][j] == '1' && la_map[i][j - 1] == '1')
+// 		return (1);
+// 	return (0);
+// }
+
 int		nowall(int key)
 {
 	int	i;
@@ -132,11 +159,13 @@ int		nowall(int key)
 	int	x;
 	int	y;
 
+	printf ("%d\n", rotation);
+	
 	if (key == -1)
 		s = -2;
 	if (key == 1)
 		s = 2;
-	x = player->x + (s * cos ((rotation + 30) * (M_PI / 180)));
+	x = player->x + (s * cos ((rotation + 30) * (M_PI / 180))); 
 	y = player->y + (s * sin ((rotation + 30) * (M_PI / 180)));
 	i = y / 30;
 	j = x / 30;
