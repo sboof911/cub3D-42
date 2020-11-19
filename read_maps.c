@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 15:38:28 by amaach            #+#    #+#             */
-/*   Updated: 2020/03/13 16:46:11 by amaach           ###   ########.fr       */
+/*   Updated: 2020/11/18 18:19:39 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ void	ft_error_colones(void)
 		if (la_map[i][compt] == ' ' || la_map[i][compt] == '1')
 			i++;
 		else
-			ft_ERROR_MASSAGE("ERROR : \n Mal carractaire mit sur la map");
+			ft_ERROR_MASSAGE("ERROR : \n map non fermer au colone 1");
 	}
 	i = 0;
 	while (la_map[i] != 0)
@@ -234,7 +234,7 @@ void	ft_error_colones(void)
 		if (la_map[0][i] == ' ' || la_map[0][i] == '1')
 			i++;
 		else
-			ft_ERROR_MASSAGE("ERROR : \n Mal carractaire mit sur la map");
+			ft_ERROR_MASSAGE("ERROR : \n map non fermer au colone 2");
 	}
 }
 
@@ -250,7 +250,7 @@ void	ft_error_lignes(void)
 		if (la_map[0][j] == ' ' || la_map[0][j] == '1')
 			j++;
 		else
-			ft_ERROR_MASSAGE("ERROR : \n Mal carractaire mit sur la map");
+			ft_ERROR_MASSAGE("ERROR : \n map non fermer en ligne 1");
 	}
 	j = 0;
 	while (la_map[compt][j] != '\0')
@@ -258,7 +258,7 @@ void	ft_error_lignes(void)
 		if (la_map[compt][j] == ' ' || la_map[compt][j] == '1')
 			j++;
 		else
-			ft_ERROR_MASSAGE("ERROR : \n Mal carractaire mit sur la map");
+			ft_ERROR_MASSAGE("ERROR : \n map non fermer en ligne 2");
 	}
 }
 
@@ -277,14 +277,105 @@ void	ft_error_zero(void)
 			{
 				if ((la_map[i - 1][j] == ' ') || (la_map[i + 1][j] == ' ')
 					|| (la_map[i][j - 1] == ' ') || (la_map[i][j + 1] == ' '))
-					ft_ERROR_MASSAGE("ERROR : \n Mal carractaire mit sur la map");
+					ft_ERROR_MASSAGE("ERROR : \n map non fermer en ligne 3");
 				if (j > strlen(la_map[i - 1]))
-					ft_ERROR_MASSAGE("ERROR : \n Mal carractaire mit sur la map");
+					ft_ERROR_MASSAGE("ERROR : \n map non fermerrr2");
 			}
 			j++;
 		}
 		i++;
 	}
+}
+
+void	ft_addspace(void)
+{
+	char	**stre;
+	int		i;
+	int		j;
+	int		k;
+	int		l;
+
+	k = -1;
+	i = 0;
+	j = 0;
+	if (!(stre = (char **)malloc(sizeof(char *) * ((highest_colone + 2 + 1)))))
+		ft_ERROR_MASSAGE("ERROR : \nPas bien alloué");
+	while (i < highest_colone + 2)
+	{
+		if (!(stre[i] = (char *)malloc(sizeof(char *) * ((highest_ligne + 2 + 1)))))
+			ft_ERROR_MASSAGE("ERROR : \nPas bien alloué");
+		i++;
+	}
+	i = 0;
+	while (i < highest_colone + 2)
+	{
+		j = 0;
+		l = 0;
+		if (i == 0 || i == highest_colone + 1)
+		{
+			while (j < highest_ligne + 2)
+			{
+				stre[i][j] = ' ';
+				j++;
+			}
+			stre[i][j] = '\0';
+		}
+		else
+		{
+			while (j < highest_ligne + 2)
+			{
+				if (j == 0)
+					stre[i][j] = ' ';
+				else
+				{
+					if (la_map[k][l] != '\0' && l < ft_strlen(la_map[k]))
+					{
+						stre[i][j] = la_map[k][l];
+						l++;
+					}
+					else
+						stre[i][j] = ' ';
+				}
+				j++;
+			}
+			stre[i][j] = '\0';
+		}
+		k++;
+		i++;
+	}
+	stre[i] = 0;
+	ft_free(la_map, highest_colone);
+	j = 0;
+	if (!(la_map = (char **)malloc(sizeof(char *) * ((highest_colone + 2 + 1)))))
+		ft_ERROR_MASSAGE("ERROR : \nPas bien alloué");
+	while (j < highest_colone + 2)
+	{
+		la_map[j] = ft_strdup(stre[j]);
+		j++;
+	}
+	la_map[j] = 0;
+	ft_free(stre, highest_colone);
+}
+
+void	ft_countmap(void)
+{
+	int		i;
+	int		l;
+	int		k;
+
+	l = 0;
+	k = 0;
+	i = 1;
+	highest_ligne = 0;
+	while (la_map[i] != '\0')
+	{
+		l = ft_strlen(la_map[i]);
+		if (highest_ligne < l)
+			highest_ligne = l;
+		i++;
+	}
+	highest_colone = ft_tablen(la_map);
+	ft_addspace();
 }
 
 void	ft_get_error_map(void)
@@ -298,29 +389,25 @@ void	ft_traitement_map(char *line, int j)
 {
 	char	*str;
 
-	if (line[0] == '\0' && !join)
-		return ;
-	else
+	if (!join)
+		join = ft_strdup("");
+	if (line && j != 0)
 	{
-		if (!join)
-			join = ft_strdup("");
-		if (line && j != 0)
-		{
-			str = ft_strjoin(join, line);
-			free(join);
-			join = ft_strjoin(str, "\n");
-			free(str);
-		}
-		if (j == 0 && join)
-		{
-			str = ft_strjoin(join, line);
-			free(join);
-			join = ft_strjoin(str, "\n");
-			free(str);
-			la_map = ft_split(join, '\n');
-			free(join);
-			ft_get_error_map();
-		}
+		str = ft_strjoin(join, line);
+		free(join);
+		join = ft_strjoin(str, "\n");
+		free(str);
+	}
+	if (j == 0 && join)
+	{
+		str = ft_strjoin(join, line);
+		free(join);
+		join = ft_strjoin(str, "\n");
+		free(str);
+		la_map = ft_split(join, '\n');
+		ft_countmap();
+		free(join);
+		ft_get_error_map();
 	}
 }
 

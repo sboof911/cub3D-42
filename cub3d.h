@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2020/03/13 16:29:17 by amaach           ###   ########.fr       */
+/*   Updated: 2020/11/18 16:54:37 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@ typedef struct s_dimention {
 	char	*S;
 }	t_dimention;
 
+typedef struct  s_data {
+    void        *img;
+    char        *addr;
+    int         bits_per_pixel;
+    int         line_length;
+    int         endian;
+}               t_data;
+
 typedef struct s_colors {
 	int		a;
 	int		b;
@@ -47,16 +55,28 @@ typedef struct point {
 	float y;
 }	t_point;
 
+t_data  		img;
 t_point			*position;
 t_point			*player;
 t_maps			*okey;
 t_dimention		*map;
 t_colors		*F;
 t_colors		*C;
-char		**la_map;
-char		*join;
-int			direction;
-int			rotation;
+char	**la_map;
+char	*join;
+int		turn_direction;
+int		walk_direction;
+int		view_direction_NS;
+int		view_direction_WE;
+int		rotation;
+int		KEY_PUD;
+int		KEY_PUD1;
+int		KEY_PRL;
+int		KEY_PRL1;
+int		KEY;
+int		highest_ligne;
+int		highest_colone;
+int		check_playerdraw;
 
 void	ft_ERROR_MASSAGE(char *str);
 int		ft_check_param(void);
