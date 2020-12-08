@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2020/11/18 16:54:37 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/06 05:51:40 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,26 +44,41 @@ typedef struct s_colors {
 	int		c;
 }	t_colors;
 
-typedef struct maps {
-
-	void	*windows; 
-	void	*init;
-}	t_maps;
-
 typedef struct point {
 	float x;
 	float y;
 }	t_point;
 
+typedef struct	ray {
+	int     FacingDown;
+    int     FacingUp;
+    int     FacingRight;
+    int     FacingLeft;
+}	t_ray;
+
+typedef struct	WallHit{
+	float   Horiz_X;
+    float   Horiz_Y;
+	float   Verti_X;
+    float   Verti_Y;
+	float	X;
+	float	Y;
+	float	Distance;
+	float	Angle;
+}	t_WallHit;
+
+t_WallHit		WallHit;
+t_ray			Ray;
 t_data  		img;
-t_point			*position;
-t_point			*player;
-t_maps			*okey;
-t_dimention		*map;
-t_colors		*F;
-t_colors		*C;
+t_point			position;
+t_point			player;
+t_dimention		map;
+t_colors		F;
+t_colors		C;
 char	**la_map;
 char	*join;
+int		FOV;
+int		TILE_SIZE;
 int		turn_direction;
 int		walk_direction;
 int		view_direction_NS;
@@ -77,7 +92,17 @@ int		KEY;
 int		highest_ligne;
 int		highest_colone;
 int		check_playerdraw;
+int		FoundAVertiWallHit;
+int		FoundAHorizWallHit;
+float	WallHitHorizDistance;
+float	WallHitVertiDistance;
+int		WasHitVerti;
+void	*g_mlx_ptr;
+void	*g_win_ptr;
+float	WINDOW_WIDTH;
+float	WINDOW_HIGHT;
 
+float	CalculDistanceDeuxPoints(float x1, float y1, float x2, float y2);
 void	ft_ERROR_MASSAGE(char *str);
 int		ft_check_param(void);
 int		ft_arrayisdigit(char *str);
@@ -99,5 +124,6 @@ void	ft_traitement_map(char *line, int j);
 void	ft_traitement(char *line, int j);
 void	ft_initialisation(void);
 void	ft_readmap(void);
+void    ft_RayCasting(void);
 
 #endif

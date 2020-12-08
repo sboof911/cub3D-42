@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 15:38:28 by amaach            #+#    #+#             */
-/*   Updated: 2020/11/18 18:19:39 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/06 05:37:49 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	ft_ERROR_MASSAGE(char *str)
 
 int		ft_check_param(void)
 {
-	if (map->x && map->y && map->WE[0] != 0 && map->NO[0] != 0
-		&& map->SO[0] != 0 && map->EA[0] != 0 && F->a >= 0
-		&& F->b >= 0 && F->c >= 0 && C->a >= 0
-		&& C->b >= 0 && C->c >= 0)
+	if (map.x && map.y && map.WE[0] != 0 && map.NO[0] != 0
+		&& map.SO[0] != 0 && map.EA[0] != 0 && F.a >= 0
+		&& F.b >= 0 && F.c >= 0 && C.a >= 0
+		&& C.b >= 0 && C.c >= 0)
 		return (1);
 	return (0);
 }
@@ -66,11 +66,11 @@ void	ft_traitement_resolution(char *line)
 	if (c_w != 3)
 		ft_ERROR_MASSAGE("ERROR : \nNombre d'argument n est pas compatible");
 	if (ft_arrayisdigit(words[1]) == 1)
-		map->x = ft_atoi(words[1]);
+		map.x = ft_atoi(words[1]);
 	else
 		ft_ERROR_MASSAGE("ERROR : \nLa Resolution n est pas compatible");
 	if (ft_arrayisdigit(words[2]) == 1)
-		map->y = ft_atoi(words[2]);
+		map.y = ft_atoi(words[2]);
 	else
 		ft_ERROR_MASSAGE("ERROR : \nLa Resolution n est pas compatible");
 	ft_free(words, ft_tablen(words));
@@ -103,16 +103,16 @@ void	ft_help_path(char **words)
 	if (ft_checkispath(words[1]) == 1)
 	{
 		if (words[0][0] == 'W' && words[0][1] == 'E')
-			map->WE = ft_alloue_free(map->WE, words[1]);
+			map.WE = ft_alloue_free(map.WE, words[1]);
 		else if (words[0][0] == 'N' 
 				&& words[0][1] == 'O' && words[0][2] == '\0')
-			map->NO = ft_alloue_free(map->NO, words[1]);
+			map.NO = ft_alloue_free(map.NO, words[1]);
 		else if (words[0][0] == 'E' 
 				&& words[0][1] == 'A' && words[0][2] == '\0')
-			map->EA = ft_alloue_free(map->EA, words[1]);
+			map.EA = ft_alloue_free(map.EA, words[1]);
 		else if (words[0][0] == 'S' 
 				&& words[0][1] == 'O' && words[0][2] == '\0')
-			map->SO = ft_alloue_free(map->SO, words[1]);
+			map.SO = ft_alloue_free(map.SO, words[1]);
 		else
 			ft_ERROR_MASSAGE("ERROR : \nSyntax ERROR");
 	}
@@ -134,7 +134,7 @@ void	ft_traitement_path(char *line)
 	if (ft_strlen(words[0]) == 1 && words[0][0] == 'S')
 	{
 		if (ft_checkispath(words[1]) == 1)
-			map->S = ft_alloue_free(map->S, words[1]);
+			map.S = ft_alloue_free(map.S, words[1]);
 	}
 	ft_free(words, ft_tablen(words));
 }
@@ -143,15 +143,15 @@ void	ft_help_2_colors(char S, int a, int b, int c)
 {
 	if (S == 'C')
 	{
-		C->a = a;
-		C->b = b;
-		C->c = c;
+		C.a = a;
+		C.b = b;
+		C.c = c;
 	}
 	else
 	{
-		F->a = a;
-		F->b = b;
-		F->c = c;
+		F.a = a;
+		F.b = b;
+		F.c = c;
 	}
 }
 
@@ -375,6 +375,8 @@ void	ft_countmap(void)
 		i++;
 	}
 	highest_colone = ft_tablen(la_map);
+	WINDOW_HIGHT = highest_ligne * TILE_SIZE;
+	WINDOW_WIDTH = highest_colone * TILE_SIZE;
 	ft_addspace();
 }
 
@@ -426,19 +428,19 @@ void	ft_traitement(char *line, int j)
 
 void	ft_initialisation(void)
 {
-	map->x = 0;
-	map->y = 0;
-	map->WE = ft_strdup("");
-	map->NO = ft_strdup("");
-	map->SO = ft_strdup("");
-	map->EA = ft_strdup("");
-	map->S = ft_strdup("");
-	F->a = -1;
-	F->b = -1;
-	F->c = -1;
-	C->a = -1;
-	C->b = -1;
-	C->c = -1;
+	map.x = 0;
+	map.y = 0;
+	map.WE = ft_strdup("");
+	map.NO = ft_strdup("");
+	map.SO = ft_strdup("");
+	map.EA = ft_strdup("");
+	map.S = ft_strdup("");
+	F.a = -1;
+	F.b = -1;
+	F.c = -1;
+	C.a = -1;
+	C.b = -1;
+	C.c = -1;
 }
 
 void	ft_readmap(void)
@@ -450,12 +452,6 @@ void	ft_readmap(void)
 
 	i = 0;
 	j = 0;
-	if (!(map = malloc(sizeof(t_dimention))))
-		ft_ERROR_MASSAGE("ERROR : \nPas bien alloué");
-	if (!(F = malloc(sizeof(t_colors))))
-		ft_ERROR_MASSAGE("ERROR : \nPas bien alloué");
-	if (!(C = malloc(sizeof(t_colors))))
-		ft_ERROR_MASSAGE("ERROR : \nPas bien alloué");
 	ft_initialisation();
 	fd = open("maps.cub", O_RDONLY);
 	if (fd < 1)
@@ -474,7 +470,7 @@ void	ft_readmap(void)
 // {
 // 	int	i=0;
 // 	ft_readmap();
-// 	printf("%d\n\n\n", map->x);
+// 	printf("%d\n\n\n", map.x);
 // 	while (la_map[i] != '\0')
 // 	{
 // 		printf("%s\n", la_map[i++]);
