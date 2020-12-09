@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 16:09:02 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/08 17:08:53 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/09 11:51:46 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ void    ft_CalDistance(void)
 	}
 }
 
-void    ft_facing(void)
+void    ft_facing(float k)
 {
     int     rota;
 
-    rota = rotation + 30;
+    rota = k;
     rota %= 360;
     if (rota >= 0 && rota < 180)
         Ray.FacingDown = 1;
@@ -54,9 +54,7 @@ void    ft_facing(void)
         Ray.FacingLeft = 1;
     else
         Ray.FacingRight = 1;
-        printf("rota = %d\n", rota);
-    printf("Ray.FacingDown = %d\n Ray.FacingUP = %d\n", Ray.FacingDown, Ray.FacingUp);
-    // printf("Ray.FacingRight = %d\n Ray.FacingLeft = %d\n", Ray.FacingRight, Ray.FacingLeft);
+    //printf("Ray.FacingDown = %d\n Ray.FacingUp = %d\n", Ray.FacingDown, Ray.FacingUp);
 }
 
 int		IsTheirAWall(float x, float y)
@@ -197,7 +195,7 @@ void	ft_initialisationRay(void)
 	WallHit.Distance = 0;
 }
 
-void    ft_RayCasting(void)
+void    ft_RayCasting(float k)
 {
     float   RayAngle;
     int     rota;
@@ -206,13 +204,13 @@ void    ft_RayCasting(void)
 
 	i = 0;
 	
-    rota = (float)rotation + 30;
+    rota = k;
     if (rota < 0)
         rota += 360;
     rota %= 360;
     RayAngle = rota * (M_PI / 180);
 	ft_initialisationRay();
-    ft_facing();
+    ft_facing(k);
     ft_horizontal(RayAngle);
     ft_vertical(RayAngle);
 	ft_CalDistance();

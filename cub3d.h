@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/06 05:51:40 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/08 18:57:22 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,6 @@ void	ft_traitement_map(char *line, int j);
 void	ft_traitement(char *line, int j);
 void	ft_initialisation(void);
 void	ft_readmap(void);
-void    ft_RayCasting(void);
+void    ft_RayCasting(float k);
 
 #endif

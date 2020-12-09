@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 11:38:43 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/08 17:17:23 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/09 11:54:12 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,10 @@ void	draw_player(unsigned int long long str)
 	}
 	i = player.x;
 	j = player.y;
-	//while (k < rotationSpeed + 60)
-	//{
-		k = rotationSpeed + 30;
+	while (k < rotationSpeed + 60)
+	{
+		//k = rotationSpeed + 30 + 0.2;
+		ft_RayCasting(k);
 		r = 0;
 		while (r < WallHit.Distance) // distance du champ de vision
 		{
@@ -101,8 +102,8 @@ void	draw_player(unsigned int long long str)
 			my_mlx_pixel_put(&img, i, j, str);
 			r+=0.2;
 		}
-	//	k+=0.2;
-	//}
+		k+=0.2;
+	}
 	my_mlx_pixel_put(&img, player.x, player.y, str);
 }
 
@@ -215,7 +216,7 @@ int		direction_player(void)
 	mlx_clear_window(g_mlx_ptr, g_win_ptr);
 	img.img = mlx_new_image(g_mlx_ptr, map.x, map.y);
 	ft_draw_map();
-	ft_RayCasting();
+	//ft_RayCasting();
 	ft_draw_player();
 	mlx_put_image_to_window(g_mlx_ptr, g_win_ptr, img.img, 0, 0);
 	
@@ -231,7 +232,7 @@ void	initialisation()
 	KEY_PRL = 0;
 	KEY_PUD1 = 0;
 	KEY_PUD = 0;
-	TILE_SIZE = 30;
+	TILE_SIZE = 20;
 	check_playerdraw = 0;
 	player.x = 0;
 	player.y = 0;
