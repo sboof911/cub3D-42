@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/15 17:51:24 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/18 12:47:58 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,10 @@ void	*g_mlx_ptr;
 void	*g_win_ptr;
 float	WINDOW_WIDTH;
 float	WINDOW_HIGHT;
-float	g_numberofrays;
-float	g_tab[1801][3];
+int		g_numberofrays;
+float	g_tab[1801][4];
 
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	dda(float X0, float Y0, float X1, float Y1, unsigned int long long str);
 float	CalculDistanceDeuxPoints(float x1, float y1, float x2, float y2);
 void	ft_ERROR_MASSAGE(char *str);
@@ -130,4 +131,5 @@ void	ft_initialisation(void);
 void	ft_readmap(void);
 void    ft_RayCasting(float k, int i);
 int		nowall(int key);
+float	RenderProjectionWall(float k, unsigned int long long str, float rotationAngle);
 #endif

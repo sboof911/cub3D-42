@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 11:38:43 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/15 19:24:47 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/18 13:21:08 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,7 @@ void	draw_player(unsigned int long long str)
 		player.y = position.y;
 	}
 	i = 0;
-	j = player.y;
-	D = FOV / g_numberofrays;
-	printf("%f\n", D);
+	//RenderProjectionWall(k, str, rotationAngle);
 	while (i < g_numberofrays /*&& k < (rotationSpeed * rotationAngle) + (FOV * rotationAngle)*/)
 	{
 		//k = rotationSpeed * rotationAngle + (M_PI / 6);
@@ -133,7 +131,8 @@ void	draw_player(unsigned int long long str)
 		//r = 0;
 		// dda
 		//printf("DISTANCE <%f>\n",  WallHit.Distance);
-		dda(player.x, player.y, player.x + WallHit.Distance * cos(k) , player.y + WallHit.Distance * sin(k), str);
+		dda(player.x, player.y, player.x + g_tab[i][0] * cos(k) , player.y + g_tab[i][0] * sin(k), str);
+		//dda(player.x, player.y, g_tab[i][0] , g_tab[i][1], str);
 		// while (r < WallHit.Distance) // distance du champ de vision
 		// {
 		// 	j = player.y + (r * sin(k * rotationAngle));
@@ -272,7 +271,7 @@ void	initialisation()
 	KEY_PRL = 0;
 	KEY_PUD1 = 0;
 	KEY_PUD = 0;
-	TILE_SIZE = 30;
+	TILE_SIZE = 32;
 	check_playerdraw = 0;
 	player.x = 0;
 	player.y = 0;

@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 16:09:02 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/15 19:01:29 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/18 13:26:37 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,21 @@ void    ft_CalDistance(int i)
     if (WallHitHorizDistance  < WallHitVertiDistance)
 	{
 		WallHit.Distance = WallHitHorizDistance;
+        g_tab[i][0] = WallHit.Distance;
 		WallHit.X = WallHit.Horiz_X;
-        g_tab[i][0] = WallHit.Horiz_X;
+        g_tab[i][1] = WallHit.Horiz_X;
 		WallHit.Y = WallHit.Horiz_Y;
-        g_tab[i][1] = WallHit.Horiz_Y;
+        g_tab[i][2] = WallHit.Horiz_Y;
 	}
 	else
 	{
 		WasHitVerti = 1;
 		WallHit.Distance = WallHitVertiDistance;
+        g_tab[i][0] = WallHit.Distance;
 		WallHit.X = WallHit.Verti_X;
-        g_tab[i][0] = WallHit.Verti_X;
+        g_tab[i][1] = WallHit.Verti_X;
 		WallHit.Y = WallHit.Verti_Y;
-        g_tab[i][1] = WallHit.Verti_Y;
+        g_tab[i][2] = WallHit.Verti_Y;
 	}
     //g_tab[i][2] = 0;
 	//printf("WallHit.Distance = %f\n", WallHit.Distance);
@@ -67,6 +69,14 @@ void    ft_facing(float k)
 	//printf("Ray.FacingRight = %d \n Ray.FacingLeft = %d\n", Ray.FacingRight, Ray.FacingLeft);
 }
 
+int     IsTheirWallSide(int i, int j)
+{
+    if (la_map[i + 1][j] == 1 && la_map[i - 1][j] == 1 
+    && la_map[i][j + 1] == 1 && la_map[i][j - 1] == 1)
+        return (1);
+    return 0;
+}
+
 int		IsTheirAWall(float x, float y)
 {
 	int		i;
@@ -78,6 +88,8 @@ int		IsTheirAWall(float x, float y)
 		y--;
 	i = floor(y / TILE_SIZE);
 	j = floor(x / TILE_SIZE);
+    if (IsTheirWallSide(i, j) == 1)
+        return (1);
     //printf("position de la map = %c\n", la_map[i][j]);
     //printf("y = %f & x = %f\n", y, x);
     //printf("i = %d & j = %d\n", i, j);
@@ -217,11 +229,11 @@ void    ft_RayCasting(float k, int i)
     float   RayAngle;
     float	rota;
 	
-    rota = k;
-    if (rota < 0)
-        rota += 2 * M_PI;
-    if (rota > 2 * M_PI)
-		rota -= 2 * M_PI;
+    rota = fmod(k, 2 * M_PI);
+    // if (rota < 0)
+    //     rota += 2 * M_PI;
+    // if (rota > 2 * M_PI)
+	// 	rota -= 2 * M_PI;
     RayAngle = rota;
 	ft_initialisationRay();
     ft_facing(rota);
