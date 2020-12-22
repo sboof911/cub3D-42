@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/18 12:47:58 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/22 17:26:19 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	*g_win_ptr;
 float	WINDOW_WIDTH;
 float	WINDOW_HIGHT;
 int		g_numberofrays;
-float	g_tab[1801][4];
+float	g_tab[5028][4];
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	dda(float X0, float Y0, float X1, float Y1, unsigned int long long str);

@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:55:59 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/18 12:59:53 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/22 17:27:26 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,20 @@ float	RenderProjectionWall(float k, unsigned int long long str, float rotationAn
 	float	WallBotPixel;
     float   Angle;
     
-    Angle = ((FOV * rotationAngle) / g_numberofrays);
+    Angle = ((FOV * rotationAngle) / map.x);
     distanceprojeplane = (map.x / 2) / tan(FOV / 2);
     i = 0;
-    while (i < g_numberofrays)
+    while (i < map.x)
     {
         ft_RayCasting(k, i);
         raydistance = g_tab[i][0];
         WallstripHeight = (TILE_SIZE / g_tab[i][0]) * distanceprojeplane;
 		WallTopPixel = (map.y / 2) -  (WallstripHeight / 2);
 		WallBotPixel = (map.y / 2) +  (WallstripHeight / 2);
+        if (WallBotPixel < 0)
+            WallBotPixel = 0;
+        if (WallTopPixel > map.x)
+            WallTopPixel = map.x;
 		// if (WallTopPixel < 0)
 		// 	WallTopPixel = 0;
 		// if (WallBotPixel > map.y)

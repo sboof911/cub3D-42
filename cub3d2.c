@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 11:38:43 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/18 13:21:08 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/22 17:26:47 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	draw_tile(void)
 		j = position.y;
 		while (j <= position.y + TILE_SIZE)
 		{
-			my_mlx_pixel_put(&img, i, j, 0xF40000);
+			//my_mlx_pixel_put(&img, i, j, 0xF40000);
 			j++;
 		}
 		i++;
@@ -122,28 +122,28 @@ void	draw_player(unsigned int long long str)
 		player.y = position.y;
 	}
 	i = 0;
-	//RenderProjectionWall(k, str, rotationAngle);
-	while (i < g_numberofrays /*&& k < (rotationSpeed * rotationAngle) + (FOV * rotationAngle)*/)
-	{
-		//k = rotationSpeed * rotationAngle + (M_PI / 6);
-		ft_RayCasting(k, i);
-		i++;
-		//r = 0;
-		// dda
-		//printf("DISTANCE <%f>\n",  WallHit.Distance);
-		dda(player.x, player.y, player.x + g_tab[i][0] * cos(k) , player.y + g_tab[i][0] * sin(k), str);
-		//dda(player.x, player.y, g_tab[i][0] , g_tab[i][1], str);
-		// while (r < WallHit.Distance) // distance du champ de vision
-		// {
-		// 	j = player.y + (r * sin(k * rotationAngle));
-		// 	i = player.x + (r * cos(k * rotationAngle));
-		// 	my_mlx_pixel_put(&img, i, j, str);
-		// 	r+=0.2;
-		// }
-		k += ((FOV * rotationAngle) / g_numberofrays);
-	}
-	//printf("i = %d\n", i);
-	my_mlx_pixel_put(&img, player.x, player.y, str);
+	RenderProjectionWall(k, str, rotationAngle);
+	// while (i < g_numberofrays /*&& k < (rotationSpeed * rotationAngle) + (FOV * rotationAngle)*/)
+	// {
+	// 	//k = rotationSpeed * rotationAngle + (M_PI / 6);
+	// 	ft_RayCasting(k, i);
+	// 	i++;
+	// 	//r = 0;
+	// 	// dda
+	// 	//printf("DISTANCE <%f>\n",  WallHit.Distance);
+	// 	dda(player.x, player.y, player.x + g_tab[i][0] * cos(k) , player.y + g_tab[i][0] * sin(k), str);
+	// 	//dda(player.x, player.y, g_tab[i][0] , g_tab[i][1], str);
+	// 	// while (r < WallHit.Distance) // distance du champ de vision
+	// 	// {
+	// 	// 	j = player.y + (r * sin(k * rotationAngle));
+	// 	// 	i = player.x + (r * cos(k * rotationAngle));
+	// 	// 	my_mlx_pixel_put(&img, i, j, str);
+	// 	// 	r+=0.2;
+	// 	// }
+	// 	k += ((FOV * rotationAngle) / g_numberofrays);
+	// }
+	// //printf("i = %d\n", i);
+	// my_mlx_pixel_put(&img, player.x, player.y, str);
 }
 
 void	ft_draw_map(void)
