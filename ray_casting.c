@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 16:09:02 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/18 13:26:37 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/25 12:23:04 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,22 @@ void    ft_CalDistance(int i)
 	    WallHitVertiDistance = CalculDistanceDeuxPoints(player.x, player.y, WallHit.Verti_X, WallHit.Verti_Y);
 	else
         WallHitVertiDistance = INT_MAX;
-    if (WallHitHorizDistance  < WallHitVertiDistance)
+    if (WallHitHorizDistance < WallHitVertiDistance)
 	{
 		WallHit.Distance = WallHitHorizDistance;
-        g_tab[i][0] = WallHit.Distance;
 		WallHit.X = WallHit.Horiz_X;
-        g_tab[i][1] = WallHit.Horiz_X;
 		WallHit.Y = WallHit.Horiz_Y;
-        g_tab[i][2] = WallHit.Horiz_Y;
 	}
 	else
 	{
 		WasHitVerti = 1;
 		WallHit.Distance = WallHitVertiDistance;
-        g_tab[i][0] = WallHit.Distance;
 		WallHit.X = WallHit.Verti_X;
-        g_tab[i][1] = WallHit.Verti_X;
 		WallHit.Y = WallHit.Verti_Y;
-        g_tab[i][2] = WallHit.Verti_Y;
 	}
-    //g_tab[i][2] = 0;
-	//printf("WallHit.Distance = %f\n", WallHit.Distance);
-	//printf("WallHitVertiDistance = %f \n WallHitHorizDistance = %f\n", WallHitVertiDistance, WallHitHorizDistance);
+    g_tab[i][0] = WallHit.Distance;
+    g_tab[i][1] = WallHit.X;
+    g_tab[i][2] = WallHit.Y;
 }
 
 void    ft_facing(float k)
@@ -65,34 +59,31 @@ void    ft_facing(float k)
         Ray.FacingLeft = 1;
     else if (k != (M_PI / 2) && k != (3 * M_PI / 2))
         Ray.FacingRight = 1;
-	//printf("Ray.FacingUP = %d \n Ray.FacingDOWN = %d\n", Ray.FacingUp, Ray.FacingDown);
-	//printf("Ray.FacingRight = %d \n Ray.FacingLeft = %d\n", Ray.FacingRight, Ray.FacingLeft);
 }
 
 int     IsTheirWallSide(int i, int j)
 {
-    if (la_map[i + 1][j] == 1 && la_map[i - 1][j] == 1 
-    && la_map[i][j + 1] == 1 && la_map[i][j - 1] == 1)
-        return (1);
+    if (Ray.FacingUp == 1 && Ray.FacingLeft == 1)
+	{
+		if (la_map[i][j + 1] == 1 && la_map[i + 1][j] == 1)
+		return 1;
+	}
     return 0;
 }
 
-int		IsTheirAWall(float x, float y)
+int		IsTheirAWall(float x, float y, int k)
 {
 	int		i;
 	int		j;
 
-	if (Ray.FacingLeft == 1 && x > 1)
+	if (Ray.FacingLeft == 1 && x > 1 && k == 1)
 		x--;
-	if (Ray.FacingUp == 1 && y > 1)
+	if (Ray.FacingUp == 1 && y > 1 && k == 2)
 		y--;
 	i = floor(y / TILE_SIZE);
 	j = floor(x / TILE_SIZE);
-    if (IsTheirWallSide(i, j) == 1)
-        return (1);
-    //printf("position de la map = %c\n", la_map[i][j]);
-    //printf("y = %f & x = %f\n", y, x);
-    //printf("i = %d & j = %d\n", i, j);
+    // if (IsTheirWallSide(i, j) == 1)
+    //     return (1);
 	if (la_map[i][j] == '1' || la_map[i][j] == ' ')
 		return (1);
 	return (0);
@@ -106,8 +97,6 @@ void    ft_vertical(float RayAngle)
     float	y_intercept;
     float	NextVertiTouch_x;
     float	NextVertiTouch_y;
-	int		test_i;
-	int		test_j;
 
     x_stepV = 0;
     y_stepV = 0;
@@ -133,13 +122,13 @@ void    ft_vertical(float RayAngle)
             && NextVertiTouch_x >= 0 && NextVertiTouch_x <= WINDOW_HIGHT)
     {
         //printf("y = %f & x = %f\n", NextVertiTouch_y, NextVertiTouch_x);
-        if (IsTheirAWall(NextVertiTouch_x, NextVertiTouch_y) == 1)
+        if (IsTheirAWall(NextVertiTouch_x, NextVertiTouch_y, 1) == 1)
         {
+            // if (Ray.FacingLeft == 1)
+            //     NextVertiTouch_x++;
             FoundAVertiWallHit = 1;
             WallHit.Verti_X = NextVertiTouch_x;
             WallHit.Verti_Y = NextVertiTouch_y;
-			test_i = floor(WallHit.Verti_X / TILE_SIZE);
-			test_j = floor(WallHit.Verti_Y / TILE_SIZE);
             break;
         }
         else
@@ -183,13 +172,13 @@ void    ft_horizontal(float RayAngle)
             && NextHorizTouch_x >= 0 && NextHorizTouch_x <= WINDOW_HIGHT)
     {
         //printf("y = %f & x = %f\n", NextHorizTouch_y, NextHorizTouch_x);
-        if (IsTheirAWall(NextHorizTouch_x, NextHorizTouch_y) == 1)
+        if (IsTheirAWall(NextHorizTouch_x, NextHorizTouch_y, 2) == 1)
         {
+            // if (Ray.FacingUp == 1)
+            //     NextHorizTouch_y++;
             FoundAHorizWallHit = 1;
             WallHit.Horiz_X = NextHorizTouch_x;
             WallHit.Horiz_Y = NextHorizTouch_y;
-			// printf("la_map position = %c\n", la_map[(int)(NextHorizTouch_y / TILE_SIZE)][(int)(NextHorizTouch_x / TILE_SIZE)]);
-			// printf("the ligne is = %d and the colone is = %d\n", (int)(NextHorizTouch_x / TILE_SIZE), (int)(NextHorizTouch_y / TILE_SIZE));
             break;
         }
         else
@@ -224,20 +213,19 @@ void	ft_initialisationRay(void)
 	WallHit.Distance = 0;
 }
 
-void    ft_RayCasting(float k, int i)
+float   ft_RayCasting(float k, int i)
 {
-    float   RayAngle;
     float	rota;
-	
+
     rota = fmod(k, 2 * M_PI);
     // if (rota < 0)
     //     rota += 2 * M_PI;
     // if (rota > 2 * M_PI)
 	// 	rota -= 2 * M_PI;
-    RayAngle = rota;
 	ft_initialisationRay();
     ft_facing(rota);
-    ft_horizontal(RayAngle);
-    ft_vertical(RayAngle);
+    ft_horizontal(rota);
+    ft_vertical(rota);
 	ft_CalDistance(i);
+    return (rota);
 }

@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/22 17:26:19 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/25 13:01:40 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int		turn_direction;
 int		walk_direction;
 int		view_direction_NS;
 int		view_direction_WE;
-int		rotation;
+float	rotation;
 int		KEY_PUD;
 int		KEY_PUD1;
 int		KEY_PRL;
@@ -129,7 +129,7 @@ void	ft_traitement_map(char *line, int j);
 void	ft_traitement(char *line, int j);
 void	ft_initialisation(void);
 void	ft_readmap(void);
-void    ft_RayCasting(float k, int i);
+float	ft_RayCasting(float k, int i);
 int		nowall(int key);
 float	RenderProjectionWall(float k, unsigned int long long str, float rotationAngle);
 #endif

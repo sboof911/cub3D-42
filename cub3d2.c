@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 11:38:43 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/22 17:26:47 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/25 14:47:25 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	draw_tile(void)
 		j = position.y;
 		while (j <= position.y + TILE_SIZE)
 		{
-			//my_mlx_pixel_put(&img, i, j, 0xF40000);
+			// my_mlx_pixel_put(&img, i, j, 0xF40000);
 			j++;
 		}
 		i++;
@@ -99,50 +99,35 @@ void dda(float X0, float Y0, float X1, float Y1, unsigned int long long str)
 void	draw_player(unsigned int long long str)
 {
 	int		i;
-	float 	j;
 	float	k;
 	float	rotationAngle;
 	float	moveSpeed;
 	float	rotationSpeed;
-	float	r;
-	float	D;
 
-	g_numberofrays = WINDOW_WIDTH;
+	g_numberofrays = map.x;
 	moveSpeed = 2;
+	i = 0;
 	rotationAngle = M_PI / 180;
-	rotationSpeed = rotation + (2 * turn_direction);
-	rotation = rotationSpeed;
-	k = rotationSpeed * rotationAngle;
+	rotationSpeed = 2 * turn_direction;
+	rotation += rotationSpeed;
+	k = rotation * rotationAngle;
 	if (rotation < 0)
 		rotation += 360;
-	rotation = rotation % 360;
+	rotation = fmod(rotation, 360);
 	if (player.x == 0 && player.y == 0)
 	{
 		player.x = position.x;
 		player.y = position.y;
 	}
-	i = 0;
 	RenderProjectionWall(k, str, rotationAngle);
-	// while (i < g_numberofrays /*&& k < (rotationSpeed * rotationAngle) + (FOV * rotationAngle)*/)
+	// while (i < g_numberofrays)
 	// {
-	// 	//k = rotationSpeed * rotationAngle + (M_PI / 6);
+	// 	//printf("le compteur est = %d////////////\n", i);
 	// 	ft_RayCasting(k, i);
-	// 	i++;
-	// 	//r = 0;
-	// 	// dda
-	// 	//printf("DISTANCE <%f>\n",  WallHit.Distance);
 	// 	dda(player.x, player.y, player.x + g_tab[i][0] * cos(k) , player.y + g_tab[i][0] * sin(k), str);
-	// 	//dda(player.x, player.y, g_tab[i][0] , g_tab[i][1], str);
-	// 	// while (r < WallHit.Distance) // distance du champ de vision
-	// 	// {
-	// 	// 	j = player.y + (r * sin(k * rotationAngle));
-	// 	// 	i = player.x + (r * cos(k * rotationAngle));
-	// 	// 	my_mlx_pixel_put(&img, i, j, str);
-	// 	// 	r+=0.2;
-	// 	// }
+	// 	i++;
 	// 	k += ((FOV * rotationAngle) / g_numberofrays);
 	// }
-	// //printf("i = %d\n", i);
 	// my_mlx_pixel_put(&img, player.x, player.y, str);
 }
 
@@ -185,11 +170,11 @@ int		nowall(int key)
 	int	y;
 
 	if (key == -1)
-		s = -2;
+		s = -8;
 	if (key == 1)
-		s = 2;
-	x = player.x + (s * cos ((rotation + 30) * (M_PI / 180)));
-	y = player.y + (s * sin ((rotation + 30) * (M_PI / 180)));
+		s = 8;
+	x = player.x + (s * cos ((rotation + (FOV / 2)) * (M_PI / 180)));
+	y = player.y + (s * sin ((rotation + (FOV / 2)) * (M_PI / 180)));
 	i = y / TILE_SIZE;
 	j = x / TILE_SIZE;
 	if (la_map[i][j] == '1' || la_map[i][j] == ' ')
@@ -216,8 +201,8 @@ void	ft_draw_player(void)
 		{
 			if (nowall(walk_direction) == 1)
 			{
-				player.x += 2 * walk_direction * cos ((rotation + 30) * (M_PI / 180));
-				player.y += 2 * walk_direction * sin ((rotation + 30) * (M_PI / 180));
+				player.x += 8 * walk_direction * cos ((rotation + (FOV / 2)) * (M_PI / 180));
+				player.y += 8 * walk_direction * sin ((rotation + (FOV / 2)) * (M_PI / 180));
 			}
 		}
 		draw_player(0xFFFFFF);
@@ -252,7 +237,7 @@ int		key_pressed(int key)
 int		direction_player(void)
 {
 	mlx_destroy_image(g_mlx_ptr, img.img);
-	mlx_clear_window(g_mlx_ptr, g_win_ptr);
+	//mlx_clear_window(g_mlx_ptr, g_win_ptr);
 	img.img = mlx_new_image(g_mlx_ptr, map.x, map.y);
 	ft_draw_map();
 	//ft_RayCasting();
@@ -268,10 +253,8 @@ void	initialisation()
 	FOV = 60;
 	KEY = 0;
 	KEY_PRL1 = 0;
-	KEY_PRL = 0;
 	KEY_PUD1 = 0;
-	KEY_PUD = 0;
-	TILE_SIZE = 32;
+	TILE_SIZE = 64;
 	check_playerdraw = 0;
 	player.x = 0;
 	player.y = 0;
