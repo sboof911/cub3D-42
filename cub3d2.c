@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 11:38:43 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/25 14:47:25 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/26 11:48:50 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ft_checkdirectionplayer(int i, int j)
 	 	rotation = 180;
 	 else if (la_map[i][j] == 'E')
 	 	rotation = 360;
-	rotation -= 30;
+	//rotation -= 30;
 }
 
 int		abs (int n) 
@@ -110,7 +110,7 @@ void	draw_player(unsigned int long long str)
 	rotationAngle = M_PI / 180;
 	rotationSpeed = 2 * turn_direction;
 	rotation += rotationSpeed;
-	k = rotation * rotationAngle;
+	k = (rotation - 30) * rotationAngle;
 	if (rotation < 0)
 		rotation += 360;
 	rotation = fmod(rotation, 360);
@@ -173,8 +173,8 @@ int		nowall(int key)
 		s = -8;
 	if (key == 1)
 		s = 8;
-	x = player.x + (s * cos ((rotation + (FOV / 2)) * (M_PI / 180)));
-	y = player.y + (s * sin ((rotation + (FOV / 2)) * (M_PI / 180)));
+	x = player.x + (s * cos (rotation * (M_PI / 180)));
+	y = player.y + (s * sin (rotation * (M_PI / 180)));
 	i = y / TILE_SIZE;
 	j = x / TILE_SIZE;
 	if (la_map[i][j] == '1' || la_map[i][j] == ' ')
@@ -201,8 +201,8 @@ void	ft_draw_player(void)
 		{
 			if (nowall(walk_direction) == 1)
 			{
-				player.x += 8 * walk_direction * cos ((rotation + (FOV / 2)) * (M_PI / 180));
-				player.y += 8 * walk_direction * sin ((rotation + (FOV / 2)) * (M_PI / 180));
+				player.x += 8 * walk_direction * cos (rotation * (M_PI / 180));
+				player.y += 8 * walk_direction * sin (rotation * (M_PI / 180));
 			}
 		}
 		draw_player(0xFFFFFF);

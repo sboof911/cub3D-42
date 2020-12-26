@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/25 13:01:40 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/26 11:21:24 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_colors		F;
 t_colors		C;
 char	**la_map;
 char	*join;
-int		FOV;
+float	FOV;
 int		TILE_SIZE;
 int		turn_direction;
 int		walk_direction;
