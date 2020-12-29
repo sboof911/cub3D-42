@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 15:38:28 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/09 17:44:13 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/29 14:16:25 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,13 @@ void	ft_help_path(char **words)
 	{
 		if (words[0][0] == 'W' && words[0][1] == 'E')
 			map.WE = ft_alloue_free(map.WE, words[1]);
-		else if (words[0][0] == 'N' 
+		else if (words[0][0] == 'N'
 				&& words[0][1] == 'O' && words[0][2] == '\0')
 			map.NO = ft_alloue_free(map.NO, words[1]);
-		else if (words[0][0] == 'E' 
+		else if (words[0][0] == 'E'
 				&& words[0][1] == 'A' && words[0][2] == '\0')
 			map.EA = ft_alloue_free(map.EA, words[1]);
-		else if (words[0][0] == 'S' 
+		else if (words[0][0] == 'S'
 				&& words[0][1] == 'O' && words[0][2] == '\0')
 			map.SO = ft_alloue_free(map.SO, words[1]);
 		else

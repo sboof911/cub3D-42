@@ -1,1 +1,1 @@
-gcc -fsanitize=address -I /usr/local/include *.c -L /usr/local/lib/ -lmlx -framework OpenGL -framework Appkit -g -O3 ; ./a.out
+gcc -I /usr/local/include *.c -L /usr/local/lib/ -lmlx -framework OpenGL -framework Appkit -O3 -g; ./a.out

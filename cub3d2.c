@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 11:38:43 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/26 11:48:50 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/29 15:06:48 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ void	ft_checkdirectionplayer(int i, int j)
 	 else if (la_map[i][j] == 'W')
 	 	rotation = 180;
 	 else if (la_map[i][j] == 'E')
-	 	rotation = 360;
-	//rotation -= 30;
+	 	rotation = 0;
 }
 
 int		abs (int n) 
@@ -161,7 +160,7 @@ void	ft_draw_map(void)
 	position.y = 0;
 }
 
-int		nowall(int key)
+int		nowallx(int key)
 {
 	int	i;
 	int	j;
@@ -174,6 +173,27 @@ int		nowall(int key)
 	if (key == 1)
 		s = 8;
 	x = player.x + (s * cos (rotation * (M_PI / 180)));
+	y = player.y;
+	i = y / TILE_SIZE;
+	j = x / TILE_SIZE;
+	if (la_map[i][j] == '1' || la_map[i][j] == ' ')
+		return (0);
+	return (1);
+}
+
+int		nowally(int key)
+{
+	int	i;
+	int	j;
+	int	s;
+	int	x;
+	int	y;
+
+	if (key == -1)
+		s = -8;
+	if (key == 1)
+		s = 8;
+	x = player.x;
 	y = player.y + (s * sin (rotation * (M_PI / 180)));
 	i = y / TILE_SIZE;
 	j = x / TILE_SIZE;
@@ -199,11 +219,10 @@ void	ft_draw_player(void)
 	{
 		if (walk_direction == -1 || walk_direction == 1) // down or up
 		{
-			if (nowall(walk_direction) == 1)
-			{
+			if (nowallx(walk_direction) == 1)
 				player.x += 8 * walk_direction * cos (rotation * (M_PI / 180));
+			if (nowally(walk_direction) == 1)
 				player.y += 8 * walk_direction * sin (rotation * (M_PI / 180));
-			}
 		}
 		draw_player(0xFFFFFF);
 	}
@@ -264,6 +283,30 @@ void	initialisation()
 	turn_direction = 0;
 }
 
+void	ft_initia_texture(void)
+{
+	texture.img = mlx_xpm_file_to_image(g_mlx_ptr, map.WE, &textures.width, &textures.height);
+	if (texture.img == NULL)
+		ft_ERROR_MASSAGE("Texture west est vide !!");
+	texture.addr = mlx_get_data_addr(texture.img, &texture.bits_per_pixel, &texture.line_length, &texture.endian);
+	textures.we = (int *)texture.addr;
+	texture.img = mlx_xpm_file_to_image(g_mlx_ptr, map.SO, &textures.width, &textures.height);
+	if (texture.img == NULL)
+		ft_ERROR_MASSAGE("Texture south est vide !!");
+	texture.addr = mlx_get_data_addr(texture.img, &texture.bits_per_pixel, &texture.line_length, &texture.endian);
+	textures.so = (int *)texture.addr;
+	texture.img = mlx_xpm_file_to_image(g_mlx_ptr, map.NO, &textures.width, &textures.height);
+	if (texture.img == NULL)
+		ft_ERROR_MASSAGE("Texture north est vide !!");
+	texture.addr = mlx_get_data_addr(texture.img, &texture.bits_per_pixel, &texture.line_length, &texture.endian);
+	textures.no = (int *)texture.addr;
+	texture.img = mlx_xpm_file_to_image(g_mlx_ptr, map.EA, &textures.width, &textures.height);
+	if (texture.img == NULL)
+		ft_ERROR_MASSAGE("Texture east est vide !!");
+	texture.addr = mlx_get_data_addr(texture.img, &texture.bits_per_pixel, &texture.line_length, &texture.endian);
+	textures.ea = (int *)texture.addr;
+}
+
 int		main()
 {
 	initialisation();
@@ -272,6 +315,7 @@ int		main()
 	g_win_ptr = mlx_new_window(g_mlx_ptr, map.x, map.y, "sboof");
 	img.img = mlx_new_image(g_mlx_ptr, map.x, map.y);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+	ft_initia_texture();
 	mlx_hook(g_win_ptr, 2, 0, key_pressed, (void *)0);
 	mlx_hook(g_win_ptr, 3, 0, key_released, (void *)0);
 	mlx_loop_hook(g_mlx_ptr, direction_player, (void *)0);

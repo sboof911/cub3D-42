@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/26 11:21:24 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/29 14:28:56 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,19 @@ typedef struct s_colors {
 	int		c;
 }	t_colors;
 
-typedef struct point {
+typedef struct s_point {
 	float x;
 	float y;
 }	t_point;
 
-typedef struct	ray {
+typedef struct	s_ray {
 	int     FacingDown;
     int     FacingUp;
     int     FacingRight;
     int     FacingLeft;
 }	t_ray;
 
-typedef struct	WallHit{
+typedef struct	s_wallhit{
 	float   Horiz_X;
     float   Horiz_Y;
 	float   Verti_X;
@@ -66,9 +66,20 @@ typedef struct	WallHit{
 	float	Y;
 	float	Distance;
 	float	Angle;
-}	t_WallHit;
+}	t_wallhit;
 
-t_WallHit		WallHit;
+typedef struct s_texture{
+	int		width;
+	int		height;
+	char	*path;
+	int		*we;
+	int		*ea;
+	int		*no;
+	int		*so;
+	int		*tab;
+}	t_texture;
+
+t_wallhit		WallHit;
 t_ray			Ray;
 t_data  		img;
 t_point			position;
@@ -76,6 +87,8 @@ t_point			player;
 t_dimention		map;
 t_colors		F;
 t_colors		C;
+t_texture		textures;
+t_data			texture;
 char	**la_map;
 char	*join;
 float	FOV;
@@ -104,6 +117,7 @@ float	WINDOW_WIDTH;
 float	WINDOW_HIGHT;
 int		g_numberofrays;
 float	g_tab[5028][4];
+void	*g_texture;
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	dda(float X0, float Y0, float X1, float Y1, unsigned int long long str);
