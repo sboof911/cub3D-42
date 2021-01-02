@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:55:59 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/29 15:03:58 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/31 11:52:46 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ float	RenderProjectionWall(float k, unsigned int long long str, float rotationAn
             wallbotpixel = map.y;
         if (walltoppixel < 0)
             walltoppixel = 0;
-        dda(i, 0, i, walltoppixel, 0x77B5FE);
+        dda(i, 0, i, walltoppixel, C.color);
 		ft_textures(i, walltoppixel, wallbotpixel, wallstripheight);
-        dda(i, wallbotpixel, i, map.y, 0x808080);
+        dda(i, wallbotpixel, i, map.y, F.color);
         rayangle += (FOV * rotationAngle) / map.x;
 		i++;
     }

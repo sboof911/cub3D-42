@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/29 14:28:56 by amaach           ###   ########.fr       */
+/*   Updated: 2020/12/31 11:50:58 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,12 @@ typedef struct s_colors {
 	int		a;
 	int		b;
 	int		c;
+	int		color;
 }	t_colors;
 
 typedef struct s_point {
-	float x;
-	float y;
+	float	x;
+	float	y;
 }	t_point;
 
 typedef struct	s_ray {

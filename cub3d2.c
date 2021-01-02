@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 11:38:43 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/29 15:06:48 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/02 11:40:43 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,8 @@ void	draw_player(unsigned int long long str)
 	rotation = fmod(rotation, 360);
 	if (player.x == 0 && player.y == 0)
 	{
-		player.x = position.x;
-		player.y = position.y;
+		player.x = position.x + TILE_SIZE / 2;
+		player.y = position.y + TILE_SIZE / 2;
 	}
 	RenderProjectionWall(k, str, rotationAngle);
 	// while (i < g_numberofrays)
@@ -149,7 +149,7 @@ void	ft_draw_map(void)
 			{
 				ft_checkdirectionplayer(i, j);
 				draw_player(0xFFFFFF);
-				check_playerdraw = 1;
+				check_playerdraw++;
 			}
 			position.x = position.x + TILE_SIZE;
 			j++;
@@ -157,7 +157,8 @@ void	ft_draw_map(void)
 		position.y = position.y + TILE_SIZE;
 		i++;
 	}
-	position.y = 0;
+	if (check_playerdraw == 0)
+		ft_ERROR_MASSAGE("Error\nposition player not found");
 }
 
 int		nowallx(int key)
@@ -169,9 +170,9 @@ int		nowallx(int key)
 	int	y;
 
 	if (key == -1)
-		s = -8;
+		s = -20;
 	if (key == 1)
-		s = 8;
+		s = 20;
 	x = player.x + (s * cos (rotation * (M_PI / 180)));
 	y = player.y;
 	i = y / TILE_SIZE;
@@ -190,9 +191,9 @@ int		nowally(int key)
 	int	y;
 
 	if (key == -1)
-		s = -8;
+		s = -20;
 	if (key == 1)
-		s = 8;
+		s = 20;
 	x = player.x;
 	y = player.y + (s * sin (rotation * (M_PI / 180)));
 	i = y / TILE_SIZE;
@@ -213,19 +214,14 @@ int		key_released(int key)
 
 void	ft_draw_player(void)
 {
-	if (KEY_PRL1 == 1)
-		draw_player(0xFFFFFF);
-    if (KEY_PUD1 == 1)
+	if (walk_direction == -1 || walk_direction == 1) // down or up
 	{
-		if (walk_direction == -1 || walk_direction == 1) // down or up
-		{
-			if (nowallx(walk_direction) == 1)
-				player.x += 8 * walk_direction * cos (rotation * (M_PI / 180));
-			if (nowally(walk_direction) == 1)
-				player.y += 8 * walk_direction * sin (rotation * (M_PI / 180));
-		}
-		draw_player(0xFFFFFF);
+		if (nowallx(walk_direction) == 1)
+			player.x += 8 * walk_direction * cos (rotation * (M_PI / 180));
+		if (nowally(walk_direction) == 1)
+			player.y += 8 * walk_direction * sin (rotation * (M_PI / 180));
 	}
+	draw_player(0xFFFFFF);
 	if (KEY == 1)
         exit(0);
 }
@@ -256,14 +252,10 @@ int		key_pressed(int key)
 int		direction_player(void)
 {
 	mlx_destroy_image(g_mlx_ptr, img.img);
-	//mlx_clear_window(g_mlx_ptr, g_win_ptr);
 	img.img = mlx_new_image(g_mlx_ptr, map.x, map.y);
 	ft_draw_map();
-	//ft_RayCasting();
 	ft_draw_player();
 	mlx_put_image_to_window(g_mlx_ptr, g_win_ptr, img.img, 0, 0);
-	
-	//printf("%d\n", turn_direction);
 	return(0);
 }
 
@@ -307,6 +299,11 @@ void	ft_initia_texture(void)
 	textures.ea = (int *)texture.addr;
 }
 
+int		ft_exit_x(void)
+{
+	exit(0);
+}
+
 int		main()
 {
 	initialisation();
@@ -318,6 +315,7 @@ int		main()
 	ft_initia_texture();
 	mlx_hook(g_win_ptr, 2, 0, key_pressed, (void *)0);
 	mlx_hook(g_win_ptr, 3, 0, key_released, (void *)0);
+	mlx_hook(g_win_ptr, 17, 0, ft_exit_x, (void *)0);
 	mlx_loop_hook(g_mlx_ptr, direction_player, (void *)0);
 	mlx_loop(g_mlx_ptr);
 }
