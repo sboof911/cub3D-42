@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/02 14:21:59 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/04 17:21:28 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,15 @@ typedef struct s_check{
 	int		c;
 } t_check;
 
+typedef struct s_sprite{
+	float	x_off;
+	float	y_off;
+	float	x;
+	float	y;
+	float	dist;
+	float	size;
+} t_sprite;
+
 t_check			compt;
 t_wallhit		WallHit;
 t_ray			Ray;
@@ -102,6 +111,7 @@ t_colors		F;
 t_colors		C;
 t_texture		textures;
 t_data			texture;
+t_sprite		*g_sprite;
 char	**la_map;
 char	*join;
 float	FOV;
@@ -112,6 +122,7 @@ int		view_direction_NS;
 int		view_direction_WE;
 float	rotation;
 int		KEY_PUD;
+int		g_s_count;
 int		KEY_PUD1;
 int		KEY_PRL;
 int		KEY_PRL1;
@@ -122,7 +133,7 @@ int		check_playerdraw;
 int		FoundAVertiWallHit;
 int		FoundAHorizWallHit;
 float	WallHitHorizDistance;
-float	WallHitVertiDistance;
+float	g_WallHitVertiDist;
 int		WasHitVerti;
 void	*g_mlx_ptr;
 void	*g_win_ptr;
@@ -159,4 +170,8 @@ void	ft_readmap(void);
 float	ft_RayCasting(float k, int i);
 int		nowall(int key);
 float	RenderProjectionWall(float k, unsigned int long long str, float rotationAngle);
+void    draw_sprite(int id);
+void    to_sprite(void);
+void	to_sort(void);
+void    init_sprite(void);
 #endif

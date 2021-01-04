@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 15:38:28 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 14:59:16 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/04 16:49:46 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -504,6 +504,25 @@ void	ft_error_map_c(void)
 	}
 }
 
+void	ft_count_sprite(void)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (la_map[i] != '\0')
+	{
+		j = 0;
+		while (la_map[i][j] != '\0')
+		{
+			if (la_map[i][j] == '2')
+				g_s_count++;
+			j++;
+		}
+		i++;
+	}
+}
+
 void	ft_get_error_map(void)
 {
 	ft_error_lignes();
@@ -511,6 +530,7 @@ void	ft_get_error_map(void)
 	ft_error_zero();
 	ft_count_players();
 	ft_error_map_c();
+	ft_count_sprite();
 }
 
 void	ft_traitement_map(char *line, int j)
@@ -577,6 +597,7 @@ void	ft_initialisation(void)
 	compt.so = 0;
 	compt.we = 0;
 	compt.r = 0;
+	g_s_count = 0;
 }
 
 void	ft_readmap(void)

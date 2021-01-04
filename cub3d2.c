@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 11:38:43 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 14:44:38 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/04 17:00:51 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	draw_tile(void)
 		j = position.y;
 		while (j <= position.y + TILE_SIZE)
 		{
-			// my_mlx_pixel_put(&img, i, j, 0xF40000);
+			// my_mlx_pixel_put(&img, i, j, 0xB40000);
 			j++;
 		}
 		i++;
@@ -177,7 +177,7 @@ int		nowallx(int key)
 	y = player.y;
 	i = y / TILE_SIZE;
 	j = x / TILE_SIZE;
-	if (la_map[i][j] == '1' || la_map[i][j] == ' ')
+	if (la_map[i][j] == '1' || la_map[i][j] == ' ' || la_map[i][j] == '2')
 		return (0);
 	return (1);
 }
@@ -198,7 +198,7 @@ int		nowally(int key)
 	y = player.y + (s * sin (rotation * (M_PI / 180)));
 	i = y / TILE_SIZE;
 	j = x / TILE_SIZE;
-	if (la_map[i][j] == '1' || la_map[i][j] == ' ')
+	if (la_map[i][j] == '1' || la_map[i][j] == ' ' || la_map[i][j] == '2')
 		return (0);
 	return (1);
 }
@@ -255,6 +255,7 @@ int		direction_player(void)
 	img.img = mlx_new_image(g_mlx_ptr, map.x, map.y);
 	ft_draw_map();
 	ft_draw_player();
+	to_sprite();
 	mlx_put_image_to_window(g_mlx_ptr, g_win_ptr, img.img, 0, 0);
 	return(0);
 }
@@ -317,6 +318,7 @@ int		main()
 	mlx_hook(g_win_ptr, 2, 0, key_pressed, (void *)0);
 	mlx_hook(g_win_ptr, 3, 0, key_released, (void *)0);
 	mlx_hook(g_win_ptr, 17, 0, ft_exit_x, (void *)0);
+	init_sprite();
 	mlx_loop_hook(g_mlx_ptr, direction_player, (void *)0);
 	mlx_loop(g_mlx_ptr);
 }
