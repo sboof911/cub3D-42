@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2020/12/31 11:50:58 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/02 14:21:59 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,18 @@ typedef struct s_texture{
 	int		*tab;
 }	t_texture;
 
+typedef struct s_check{
+	int		r;
+	int		so;
+	int		we;
+	int		no;
+	int		ea;
+	int		s;
+	int		f;
+	int		c;
+} t_check;
+
+t_check			compt;
 t_wallhit		WallHit;
 t_ray			Ray;
 t_data  		img;
@@ -123,7 +135,7 @@ void	*g_texture;
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	dda(float X0, float Y0, float X1, float Y1, unsigned int long long str);
 float	CalculDistanceDeuxPoints(float x1, float y1, float x2, float y2);
-void	ft_ERROR_MASSAGE(char *str);
+void	ft_error_massege(char *str);
 int		ft_check_param(void);
 int		ft_arrayisdigit(char *str);
 void	ft_traitement_resolution(char *line);

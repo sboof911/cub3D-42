@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 11:38:43 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/02 11:40:43 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/04 14:44:38 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void	ft_draw_map(void)
 		i++;
 	}
 	if (check_playerdraw == 0)
-		ft_ERROR_MASSAGE("Error\nposition player not found");
+		ft_error_massege("Error\nposition player not found");
 }
 
 int		nowallx(int key)
@@ -279,22 +279,22 @@ void	ft_initia_texture(void)
 {
 	texture.img = mlx_xpm_file_to_image(g_mlx_ptr, map.WE, &textures.width, &textures.height);
 	if (texture.img == NULL)
-		ft_ERROR_MASSAGE("Texture west est vide !!");
+		ft_error_massege("Texture west est vide !!");
 	texture.addr = mlx_get_data_addr(texture.img, &texture.bits_per_pixel, &texture.line_length, &texture.endian);
 	textures.we = (int *)texture.addr;
 	texture.img = mlx_xpm_file_to_image(g_mlx_ptr, map.SO, &textures.width, &textures.height);
 	if (texture.img == NULL)
-		ft_ERROR_MASSAGE("Texture south est vide !!");
+		ft_error_massege("Texture south est vide !!");
 	texture.addr = mlx_get_data_addr(texture.img, &texture.bits_per_pixel, &texture.line_length, &texture.endian);
 	textures.so = (int *)texture.addr;
 	texture.img = mlx_xpm_file_to_image(g_mlx_ptr, map.NO, &textures.width, &textures.height);
 	if (texture.img == NULL)
-		ft_ERROR_MASSAGE("Texture north est vide !!");
+		ft_error_massege("Texture north est vide !!");
 	texture.addr = mlx_get_data_addr(texture.img, &texture.bits_per_pixel, &texture.line_length, &texture.endian);
 	textures.no = (int *)texture.addr;
 	texture.img = mlx_xpm_file_to_image(g_mlx_ptr, map.EA, &textures.width, &textures.height);
 	if (texture.img == NULL)
-		ft_ERROR_MASSAGE("Texture east est vide !!");
+		ft_error_massege("Texture east est vide !!");
 	texture.addr = mlx_get_data_addr(texture.img, &texture.bits_per_pixel, &texture.line_length, &texture.endian);
 	textures.ea = (int *)texture.addr;
 }
@@ -308,6 +308,7 @@ int		main()
 {
 	initialisation();
 	ft_readmap();
+	int i = 0;
 	g_mlx_ptr = mlx_init();
 	g_win_ptr = mlx_new_window(g_mlx_ptr, map.x, map.y, "sboof");
 	img.img = mlx_new_image(g_mlx_ptr, map.x, map.y);
