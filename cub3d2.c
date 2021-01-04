@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 11:38:43 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 17:00:51 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/04 17:46:19 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,14 @@ void	draw_tile(void)
 {
 	float i;
 	float j;
-	
-	
+
 	i = position.x;
 	j = position.y;
 	while (i <= position.x + TILE_SIZE)
 	{
 		j = position.y;
 		while (j <= position.y + TILE_SIZE)
-		{
-			// my_mlx_pixel_put(&img, i, j, 0xB40000);
 			j++;
-		}
 		i++;
 	}
 }
@@ -118,7 +114,7 @@ void	draw_player(unsigned int long long str)
 		player.x = position.x + TILE_SIZE / 2;
 		player.y = position.y + TILE_SIZE / 2;
 	}
-	RenderProjectionWall(k, str, rotationAngle);
+	renderprojectionwall(k, rotationAngle);
 	// while (i < g_numberofrays)
 	// {
 	// 	//printf("le compteur est = %d////////////\n", i);

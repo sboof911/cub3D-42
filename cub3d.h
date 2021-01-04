@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 17:21:28 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/04 17:40:44 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,11 +167,11 @@ void	ft_traitement_map(char *line, int j);
 void	ft_traitement(char *line, int j);
 void	ft_initialisation(void);
 void	ft_readmap(void);
-float	ft_RayCasting(float k, int i);
+float	ft_raycasting(float k, int i);
 int		nowall(int key);
-float	RenderProjectionWall(float k, unsigned int long long str, float rotationAngle);
-void    draw_sprite(int id);
-void    to_sprite(void);
+float	renderprojectionwall(float k, float rotationangle);
+void	draw_sprite(int id);
+void	to_sprite(void);
 void	to_sort(void);
-void    init_sprite(void);
+void	init_sprite(void);
 #endif
