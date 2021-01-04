@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 16:09:02 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 17:40:48 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/04 17:53:10 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ float	cddp(float x1, float y1, float x2, float y2)
 	return (d);
 }
 
-void	ft_CalDistance(int i)
+void	ft_caldistance(int i)
 {
 	if (FoundAHorizWallHit == 1)
 		WallHitHorizDistance = cddp(player.x, player.y,
@@ -29,10 +29,11 @@ void	ft_CalDistance(int i)
 	else
 		WallHitHorizDistance = INT_MAX;
 	if (FoundAVertiWallHit == 1)
-		g_WallHitVertiDist = cddp(player.x, player.y, WallHit.Verti_X, WallHit.Verti_Y);
+		g_wallhitvertidist = cddp(player.x, player.y,
+								WallHit.Verti_X, WallHit.Verti_Y);
 	else
-		g_WallHitVertiDist = INT_MAX;
-	if (WallHitHorizDistance < g_WallHitVertiDist)
+		g_wallhitvertidist = INT_MAX;
+	if (WallHitHorizDistance < g_wallhitvertidist)
 	{
 		WallHit.Distance = WallHitHorizDistance;
 		WallHit.X = WallHit.Horiz_X;
@@ -41,7 +42,7 @@ void	ft_CalDistance(int i)
 	else
 	{
 		WasHitVerti = 1;
-		WallHit.Distance = g_WallHitVertiDist;
+		WallHit.Distance = g_wallhitvertidist;
 		WallHit.X = WallHit.Verti_X;
 		WallHit.Y = WallHit.Verti_Y;
 	}
@@ -62,7 +63,7 @@ void	ft_facing(float k)
 		Ray.FacingRight = 1;
 }
 
-int		IsTheirWallSide(int i, int j)
+int		istheirwallside(int i, int j)
 {
 	if (Ray.FacingUp == 1 && Ray.FacingLeft == 1)
 	{
@@ -72,7 +73,7 @@ int		IsTheirWallSide(int i, int j)
 	return (0);
 }
 
-int		IsTheirAWall(float x, float y, int k)
+int		istheirawall(float x, float y, int k)
 {
 	int		i;
 	int		j;
@@ -88,7 +89,7 @@ int		IsTheirAWall(float x, float y, int k)
 	return (0);
 }
 
-void    ft_vertical(float RayAngle)
+void	ft_vertical(float rayangle)
 {
 	float	x_stepv;
 	float	y_stepv;
@@ -104,11 +105,11 @@ void    ft_vertical(float RayAngle)
 	x_intercept = floor(player.x / TILE_SIZE) * TILE_SIZE;
 	if (Ray.FacingRight == 1)
 		x_intercept += TILE_SIZE;
-	y_intercept = player.y + ((x_intercept - player.x) * tan(RayAngle));
+	y_intercept = player.y + ((x_intercept - player.x) * tan(rayangle));
 	x_stepv = TILE_SIZE;
 	if (Ray.FacingLeft == 1)
 		x_stepv *= -1;
-	y_stepv = TILE_SIZE * tan(RayAngle);
+	y_stepv = TILE_SIZE * tan(rayangle);
 	if (Ray.FacingUp == 1 && y_stepv > 0)
 		y_stepv *= -1;
 	if (Ray.FacingDown == 1 && y_stepv < 0)
@@ -118,7 +119,7 @@ void    ft_vertical(float RayAngle)
 	while (NextVertiTouch_y >= 0 && NextVertiTouch_y <= WINDOW_WIDTH
 			&& NextVertiTouch_x >= 0 && NextVertiTouch_x <= WINDOW_HIGHT)
 	{
-		if (IsTheirAWall(NextVertiTouch_x, NextVertiTouch_y, 1) == 1)
+		if (istheirawall(NextVertiTouch_x, NextVertiTouch_y, 1) == 1)
 		{
 			FoundAVertiWallHit = 1;
 			WallHit.Verti_X = NextVertiTouch_x;
@@ -133,7 +134,7 @@ void    ft_vertical(float RayAngle)
 	}
 }
 
-void	ft_horizontal(float RayAngle)
+void	ft_horizontal(float rayangle)
 {
 	float	x_steph;
 	float	y_steph;
@@ -141,6 +142,7 @@ void	ft_horizontal(float RayAngle)
 	float	y_intercept;
 	float	NextHorizTouch_x;
 	float	NextHorizTouch_y;
+
 	x_steph = 0;
 	y_steph = 0;
 	x_intercept = 0;
@@ -148,11 +150,11 @@ void	ft_horizontal(float RayAngle)
 	y_intercept = floor(player.y / TILE_SIZE) * TILE_SIZE;
 	if (Ray.FacingDown == 1)
 		y_intercept += TILE_SIZE;
-	x_intercept = player.x + (y_intercept - player.y) / tan(RayAngle);
+	x_intercept = player.x + (y_intercept - player.y) / tan(rayangle);
 	y_steph = TILE_SIZE;
 	if (Ray.FacingUp == 1)
 		y_steph *= -1;
-	x_steph = TILE_SIZE / tan(RayAngle);
+	x_steph = TILE_SIZE / tan(rayangle);
 	if (Ray.FacingLeft == 1 && x_steph > 0)
 		x_steph *= -1;
 	if (Ray.FacingRight == 1 && x_steph < 0)
@@ -162,7 +164,7 @@ void	ft_horizontal(float RayAngle)
 	while (NextHorizTouch_y >= 0 && NextHorizTouch_y <= WINDOW_WIDTH
 			&& NextHorizTouch_x >= 0 && NextHorizTouch_x <= WINDOW_HIGHT)
 	{
-		if (IsTheirAWall(NextHorizTouch_x, NextHorizTouch_y, 2) == 1)
+		if (istheirawall(NextHorizTouch_x, NextHorizTouch_y, 2) == 1)
 		{
 			FoundAHorizWallHit = 1;
 			WallHit.Horiz_X = NextHorizTouch_x;
@@ -182,7 +184,7 @@ void	ft_initialisationray(void)
 	FoundAHorizWallHit = 0;
 	FoundAVertiWallHit = 0;
 	WallHitHorizDistance = 0;
-	g_WallHitVertiDist = 0;
+	g_wallhitvertidist = 0;
 	WallHit.Horiz_X = 0;
 	WallHit.Horiz_Y = 0;
 	WallHit.Verti_X = 0;
@@ -210,6 +212,6 @@ float	ft_raycasting(float k, int i)
 	ft_facing(rota);
 	ft_horizontal(rota);
 	ft_vertical(rota);
-	ft_CalDistance(i);
+	ft_caldistance(i);
 	return (rota);
 }

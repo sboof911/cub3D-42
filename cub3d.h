@@ -6,70 +6,70 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 17:40:44 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/04 18:11:52 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-#include <mlx.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <unistd.h>
-#include <limits.h>
-#include "libft.h"
+# include <mlx.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <math.h>
+# include <unistd.h>
+# include <limits.h>
+# include "libft.h"
 
-typedef struct s_dimention {
+typedef struct	s_dimention {
 	int		x;
-	int 	y;
+	int		y;
 	char	*WE;
 	char	*NO;
 	char	*SO;
 	char	*EA;
 	char	*S;
-}	t_dimention;
+}				t_dimention;
 
-typedef struct  s_data {
+typedef struct	s_data {
     void        *img;
     char        *addr;
     int         bits_per_pixel;
     int         line_length;
     int         endian;
-}               t_data;
+}				t_data;
 
-typedef struct s_colors {
+typedef struct	s_colors {
 	int		a;
 	int		b;
 	int		c;
 	int		color;
-}	t_colors;
+}				t_colors;
 
-typedef struct s_point {
+typedef struct	s_point {
 	float	x;
 	float	y;
-}	t_point;
+}				t_point;
 
 typedef struct	s_ray {
-	int     FacingDown;
-    int     FacingUp;
-    int     FacingRight;
-    int     FacingLeft;
-}	t_ray;
+	int		FacingDown;
+	int		FacingUp;
+	int		FacingRight;
+	int		FacingLeft;
+}				t_ray;
 
 typedef struct	s_wallhit{
-	float   Horiz_X;
-    float   Horiz_Y;
-	float   Verti_X;
-    float   Verti_Y;
+	float	Horiz_X;
+	float	Horiz_Y;
+	float	Verti_X;
+	float	Verti_Y;
 	float	X;
 	float	Y;
 	float	Distance;
 	float	Angle;
-}	t_wallhit;
+}				t_wallhit;
 
-typedef struct s_texture{
+typedef struct	s_texture{
 	int		width;
 	int		height;
 	char	*path;
@@ -78,9 +78,9 @@ typedef struct s_texture{
 	int		*no;
 	int		*so;
 	int		*tab;
-}	t_texture;
+}				t_texture;
 
-typedef struct s_check{
+typedef struct	s_check{
 	int		r;
 	int		so;
 	int		we;
@@ -89,16 +89,16 @@ typedef struct s_check{
 	int		s;
 	int		f;
 	int		c;
-} t_check;
+}				t_check;
 
-typedef struct s_sprite{
+typedef struct	s_sprite{
 	float	x_off;
 	float	y_off;
 	float	x;
 	float	y;
 	float	dist;
 	float	size;
-} t_sprite;
+}				t_sprite;
 
 t_check			compt;
 t_wallhit		WallHit;
@@ -133,7 +133,7 @@ int		check_playerdraw;
 int		FoundAVertiWallHit;
 int		FoundAHorizWallHit;
 float	WallHitHorizDistance;
-float	g_WallHitVertiDist;
+float	g_wallhitvertidist;
 int		WasHitVerti;
 void	*g_mlx_ptr;
 void	*g_win_ptr;
@@ -145,7 +145,7 @@ void	*g_texture;
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	dda(float X0, float Y0, float X1, float Y1, unsigned int long long str);
-float	CalculDistanceDeuxPoints(float x1, float y1, float x2, float y2);
+float	cddp(float x1, float y1, float x2, float y2);
 void	ft_error_massege(char *str);
 int		ft_check_param(void);
 int		ft_arrayisdigit(char *str);

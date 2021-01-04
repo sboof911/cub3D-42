@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:55:59 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 17:45:10 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/04 17:48:05 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,19 @@ void	ft_check_texture(int textoffset_x, int textoffset_y, int i, float y)
 	my_mlx_pixel_put(&img, i, y, color);
 }
 
-void	ft_textures(int i, float walltoppixel, float wallbotpixel, float wallstripheight)
+void	ft_textures(int i, float walltop, float wallbot, float wallstripheight)
 {
 	int		textureoffset_x;
 	int		textureoffset_y;
 	float	y;
 	float	distancefromtop;
 
-	y = (int)walltoppixel;
+	y = (int)walltop;
 	if (WasHitVerti)
 		textureoffset_x = (int)g_tab[i][2] % TILE_SIZE;
 	else
 		textureoffset_x = (int)g_tab[i][1] % TILE_SIZE;
-	while (y < wallbotpixel)
+	while (y < wallbot)
 	{
 		distancefromtop = y + (wallstripheight / 2) - (map.y / 2);
 		textureoffset_y = distancefromtop *
