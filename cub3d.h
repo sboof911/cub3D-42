@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 18:11:52 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/04 18:51:44 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ typedef struct	s_dimention {
 }				t_dimention;
 
 typedef struct	s_data {
-    void        *img;
-    char        *addr;
-    int         bits_per_pixel;
-    int         line_length;
-    int         endian;
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
 }				t_data;
 
 typedef struct	s_colors {
@@ -65,7 +65,7 @@ typedef struct	s_wallhit{
 	float	Verti_Y;
 	float	X;
 	float	Y;
-	float	Distance;
+	float	distance;
 	float	Angle;
 }				t_wallhit;
 
@@ -100,48 +100,45 @@ typedef struct	s_sprite{
 	float	size;
 }				t_sprite;
 
-t_check			compt;
-t_wallhit		WallHit;
-t_ray			Ray;
-t_data  		img;
-t_point			position;
-t_point			player;
-t_dimention		map;
-t_colors		F;
-t_colors		C;
-t_texture		textures;
-t_data			texture;
+t_check			g_compt;
+t_wallhit		g_wallhit;
+t_ray			g_ray;
+t_data			g_img;
+t_point			g_position;
+t_point			g_player;
+t_dimention		g_map;
+t_colors		g_floor;
+t_colors		g_ceil;
+t_texture		g_textures;
+t_data			g_texture;
 t_sprite		*g_sprite;
-char	**la_map;
-char	*join;
-float	FOV;
-int		TILE_SIZE;
-int		turn_direction;
-int		walk_direction;
-int		view_direction_NS;
-int		view_direction_WE;
-float	rotation;
-int		KEY_PUD;
+char	**g_la_map;
+char	*g_join;
+float	g_fov;
+int		g_tile_size;
+int		g_turn_direction;
+int		g_walk_direction;
+float	g_rotation;
+int		g_key_pud;
 int		g_s_count;
-int		KEY_PUD1;
-int		KEY_PRL;
-int		KEY_PRL1;
-int		KEY;
-int		highest_ligne;
-int		highest_colone;
-int		check_playerdraw;
-int		FoundAVertiWallHit;
-int		FoundAHorizWallHit;
-float	WallHitHorizDistance;
+int		g_key_pud1;
+int		g_key_prl;
+int		g_key_prl1;
+int		g_key;
+int		g_highest_ligne;
+int		g_highest_colone;
+int		g_check_playerdraw;
+int		g_foundavertiwallhit;
+int		g_foundahorizwallhit;
+float	g_wallhithorizdist;
 float	g_wallhitvertidist;
-int		WasHitVerti;
+int		g_washitverti;
 void	*g_mlx_ptr;
 void	*g_win_ptr;
-float	WINDOW_WIDTH;
-float	WINDOW_HIGHT;
+float	g_w_width;
+float	g_w_height;
 int		g_numberofrays;
 float	g_tab[5028][4];
-void	*g_texture;
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	dda(float X0, float Y0, float X1, float Y1, unsigned int long long str);

@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:55:59 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 17:48:05 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/04 18:49:07 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,21 @@ void	ft_check_texture(int textoffset_x, int textoffset_y, int i, float y)
 {
 	int		color;
 
-	if (WasHitVerti == 1)
+	if (g_washitverti == 1)
 	{
-		if (Ray.FacingLeft)
-			color = textures.ea[(textures.width * textoffset_y) + textoffset_x];
+		if (g_ray.FacingLeft)
+			color = g_textures.ea[(g_textures.width * textoffset_y) + textoffset_x];
 		else
-			color = textures.we[(textures.width * textoffset_y) + textoffset_x];
+			color = g_textures.we[(g_textures.width * textoffset_y) + textoffset_x];
 	}
 	else
 	{
-		if (Ray.FacingUp)
-			color = textures.no[(textures.width * textoffset_y) + textoffset_x];
+		if (g_ray.FacingUp)
+			color = g_textures.no[(g_textures.width * textoffset_y) + textoffset_x];
 		else
-			color = textures.so[(textures.width * textoffset_y) + textoffset_x];
+			color = g_textures.so[(g_textures.width * textoffset_y) + textoffset_x];
 	}
-	my_mlx_pixel_put(&img, i, y, color);
+	my_mlx_pixel_put(&g_img, i, y, color);
 }
 
 void	ft_textures(int i, float walltop, float wallbot, float wallstripheight)
@@ -41,15 +41,15 @@ void	ft_textures(int i, float walltop, float wallbot, float wallstripheight)
 	float	distancefromtop;
 
 	y = (int)walltop;
-	if (WasHitVerti)
-		textureoffset_x = (int)g_tab[i][2] % TILE_SIZE;
+	if (g_washitverti)
+		textureoffset_x = (int)g_tab[i][2] % g_tile_size;
 	else
-		textureoffset_x = (int)g_tab[i][1] % TILE_SIZE;
+		textureoffset_x = (int)g_tab[i][1] % g_tile_size;
 	while (y < wallbot)
 	{
-		distancefromtop = y + (wallstripheight / 2) - (map.y / 2);
+		distancefromtop = y + (wallstripheight / 2) - (g_map.y / 2);
 		textureoffset_y = distancefromtop *
-						((float)textures.height / wallstripheight);
+						((float)g_textures.height / wallstripheight);
 		ft_check_texture(textureoffset_x, textureoffset_y, i, y);
 		y++;
 	}
@@ -73,22 +73,22 @@ float	renderprojectionwall(float k, float rotationangle)
 	rayangle = 0;
 	i = 0;
 	rayangle = k;
-	distanceprojeplane = (map.x / 2.0) / tan((FOV * M_PI / 180) / 2);
-	while (i < map.x)
+	distanceprojeplane = (g_map.x / 2.0) / tan((g_fov * M_PI / 180) / 2);
+	while (i < g_map.x)
 	{
 		rayangle = ft_raycasting(rayangle, i);
-		correctdistance = g_tab[i][0] * cos(rayangle - (rotation * M_PI / 180));
-		wallstripheight = (TILE_SIZE / correctdistance) * distanceprojeplane;
-		walltoppixel = (map.y / 2) - (wallstripheight / 2);
-		wallbotpixel = (map.y / 2) + (wallstripheight / 2);
-		if (wallbotpixel > map.y)
-			wallbotpixel = map.y;
+		correctdistance = g_tab[i][0] * cos(rayangle - (g_rotation * M_PI / 180));
+		wallstripheight = (g_tile_size / correctdistance) * distanceprojeplane;
+		walltoppixel = (g_map.y / 2) - (wallstripheight / 2);
+		wallbotpixel = (g_map.y / 2) + (wallstripheight / 2);
+		if (wallbotpixel > g_map.y)
+			wallbotpixel = g_map.y;
 		if (walltoppixel < 0)
 			walltoppixel = 0;
-		dda(i, 0, i, walltoppixel, C.color);
+		dda(i, 0, i, walltoppixel, g_ceil.color);
 		ft_textures(i, walltoppixel, wallbotpixel, wallstripheight);
-		dda(i, wallbotpixel, i, map.y, F.color);
-		rayangle += (FOV * rotationangle) / map.x;
+		dda(i, wallbotpixel, i, g_map.y, g_floor.color);
+		rayangle += (g_fov * rotationangle) / g_map.x;
 		i++;
 	}
 	return (k);

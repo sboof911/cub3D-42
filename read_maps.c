@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 15:38:28 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 18:06:16 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/04 18:49:52 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	ft_error_massege(char *str)
 
 int		ft_check_param(void)
 {
-	if (map.x && map.y && map.WE[0] != 0 && map.NO[0] != 0
-		&& map.SO[0] != 0 && map.EA[0] != 0 && F.a >= 0
-		&& F.b >= 0 && F.c >= 0 && C.a >= 0
-		&& C.b >= 0 && C.c >= 0)
+	if (g_map.x && g_map.y && g_map.WE[0] != 0 && g_map.NO[0] != 0
+		&& g_map.SO[0] != 0 && g_map.EA[0] != 0 && g_floor.a >= 0
+		&& g_floor.b >= 0 && g_floor.c >= 0 && g_ceil.a >= 0
+		&& g_ceil.b >= 0 && g_ceil.c >= 0)
 		return (1);
 	return (0);
 }
@@ -56,11 +56,11 @@ int		ft_arrayisdigit(char *str)
 
 void	ft_regle_reso(void)
 {
-	if (map.x > 2560)
-		map.x = 2560;
-	if (map.y > 1440)
-		map.y = 1440;
-	if (map.x < 100 || map.y < 100)
+	if (g_map.x > 2560)
+		g_map.x = 2560;
+	if (g_map.y > 1440)
+		g_map.y = 1440;
+	if (g_map.x < 100 || g_map.y < 100)
 		ft_error_massege("Error\nResolution super minim veuillez l augmenter");
 }
 
@@ -76,15 +76,15 @@ void	ft_traitement_resolution(char *line)
 	if (c_w != 3)
 		ft_error_massege("Error\nNombre d'argument n est pas compatible");
 	if (ft_arrayisdigit(words[1]) == 1)
-		map.x = ft_atoi(words[1]);
+		g_map.x = ft_atoi(words[1]);
 	else
 		ft_error_massege("Error\nLa Resolution n est pas compatible");
 	if (ft_arrayisdigit(words[2]) == 1)
-		map.y = ft_atoi(words[2]);
+		g_map.y = ft_atoi(words[2]);
 	else
 		ft_error_massege("Error\nLa Resolution n est pas compatible");
 	ft_regle_reso();
-	compt.r++;
+	g_compt.r++;
 	ft_free(words, ft_tablen(words));
 }
 
@@ -115,20 +115,20 @@ void	ft_help_path(char **words)
 	if (ft_checkispath(words[1]) == 1)
 	{
 		if (words[0][0] == 'W' && words[0][1] == 'E'
-			&& words[0][2] == '\0' && (++compt.we))
-			map.WE = ft_alloue_free(map.WE, words[1]);
+			&& words[0][2] == '\0' && (++g_compt.we))
+			g_map.WE = ft_alloue_free(g_map.WE, words[1]);
 		else if (words[0][0] == 'N' && words[0][1] == 'O'
-				&& words[0][2] == '\0' && (++compt.no))
-			map.NO = ft_alloue_free(map.NO, words[1]);
+				&& words[0][2] == '\0' && (++g_compt.no))
+			g_map.NO = ft_alloue_free(g_map.NO, words[1]);
 		else if (words[0][0] == 'E' && words[0][1] == 'A'
-				&& words[0][2] == '\0' && (++compt.ea))
-			map.EA = ft_alloue_free(map.EA, words[1]);
+				&& words[0][2] == '\0' && (++g_compt.ea))
+			g_map.EA = ft_alloue_free(g_map.EA, words[1]);
 		else if (words[0][0] == 'S' && words[0][1] == 'O'
-				&& words[0][2] == '\0' && (++compt.so))
-			map.SO = ft_alloue_free(map.SO, words[1]);
+				&& words[0][2] == '\0' && (++g_compt.so))
+			g_map.SO = ft_alloue_free(g_map.SO, words[1]);
 		else if (words[0][0] == 'S' && words[0][1] == '\0'
-				&& (++compt.s))
-			map.S = ft_alloue_free(map.S, words[1]);
+				&& (++g_compt.s))
+			g_map.S = ft_alloue_free(g_map.S, words[1]);
 		else
 			ft_error_massege("Error\nSyntax ERROR");
 	}
@@ -158,19 +158,19 @@ void	ft_help_2_colors(char S, int a, int b, int c)
 		ft_error_massege("Error\nCouleur est supperieur a 255 svp de la regler");
 	if (S == 'C')
 	{
-		compt.c++;
-		C.color = a << 16 | b << 8 | c;
-		C.a = a;
-		C.b = b;
-		C.c = c;
+		g_compt.c++;
+		g_ceil.color = a << 16 | b << 8 | c;
+		g_ceil.a = a;
+		g_ceil.b = b;
+		g_ceil.c = c;
 	}
 	else
 	{
-		compt.f++;
-		F.color = a << 16 | b << 8 | c;
-		F.a = a;
-		F.b = b;
-		F.c = c;
+		g_compt.f++;
+		g_floor.color = a << 16 | b << 8 | c;
+		g_floor.a = a;
+		g_floor.b = b;
+		g_floor.c = c;
 	}
 	
 }
@@ -243,21 +243,21 @@ void	ft_traitement_colors(char *line)
 
 void	ft_check_double(void)
 {
-	if (compt.r > 1)
+	if (g_compt.r > 1)
 		ft_error_massege("Error\nplus d une resolution");
-	if (compt.no > 1)
+	if (g_compt.no > 1)
 		ft_error_massege("Error\nplus d un path NO");
-	if (compt.so > 1)
+	if (g_compt.so > 1)
 		ft_error_massege("Error\nplus d un path SO");
-	if (compt.we > 1)
+	if (g_compt.we > 1)
 		ft_error_massege("Error\nplus d un path WE");
-	if (compt.ea > 1)
+	if (g_compt.ea > 1)
 		ft_error_massege("Error\nplus d un path EA");
-	if (compt.s > 1)
+	if (g_compt.s > 1)
 		ft_error_massege("Error\nplus d un path S");
-	if (compt.f > 1)
+	if (g_compt.f > 1)
 		ft_error_massege("Error\nplus d une couleur F");
-	if (compt.c > 1)
+	if (g_compt.c > 1)
 		ft_error_massege("Error\nplus d une couleur C");
 }
 
@@ -285,18 +285,18 @@ void	ft_error_colones(void)
 	int		compt;
 
 	i = 0;
-	while (la_map[i] != 0)
+	while (g_la_map[i] != 0)
 	{
-		compt = ft_strlen(la_map[i]) - 1;
-		if (la_map[i][compt] == ' ' || la_map[i][compt] == '1')
+		compt = ft_strlen(g_la_map[i]) - 1;
+		if (g_la_map[i][compt] == ' ' || g_la_map[i][compt] == '1')
 			i++;
 		else
 			ft_error_massege("Error\n map non fermer au colone 1");
 	}
 	i = 0;
-	while (la_map[i] != 0)
+	while (g_la_map[i] != 0)
 	{
-		if (la_map[0][i] == ' ' || la_map[0][i] == '1')
+		if (g_la_map[0][i] == ' ' || g_la_map[0][i] == '1')
 			i++;
 		else
 			ft_error_massege("Error\n map non fermer au colone 2");
@@ -309,18 +309,18 @@ void	ft_error_lignes(void)
 	int		compt;
 
 	j = 0;
-	compt = ft_tablen(la_map) - 1;
-	while (la_map[0][j] != '\0')
+	compt = ft_tablen(g_la_map) - 1;
+	while (g_la_map[0][j] != '\0')
 	{
-		if (la_map[0][j] == ' ' || la_map[0][j] == '1')
+		if (g_la_map[0][j] == ' ' || g_la_map[0][j] == '1')
 			j++;
 		else
 			ft_error_massege("Error\n map non fermer en ligne 1");
 	}
 	j = 0;
-	while (la_map[compt][j] != '\0')
+	while (g_la_map[compt][j] != '\0')
 	{
-		if (la_map[compt][j] == ' ' || la_map[compt][j] == '1')
+		if (g_la_map[compt][j] == ' ' || g_la_map[compt][j] == '1')
 			j++;
 		else
 			ft_error_massege("Error\n map non fermer en ligne 2");
@@ -333,18 +333,18 @@ void	ft_error_zero(void)
 	size_t	j;
 
 	i = 1;
-	while (i < ft_tablen(la_map) - 1)
+	while (i < ft_tablen(g_la_map) - 1)
 	{
 		j = 1;
-		while (j < ft_strlen(la_map[i]) - 1)
+		while (j < ft_strlen(g_la_map[i]) - 1)
 		{
-			if (la_map[i][j] == '0' || la_map[i][j] == '2' || la_map[i][j] == 'N'
-				|| la_map[i][j] == 'W' || la_map[i][j] == 'E' || la_map[i][j] == 'S')
+			if (g_la_map[i][j] == '0' || g_la_map[i][j] == '2' || g_la_map[i][j] == 'N'
+				|| g_la_map[i][j] == 'W' || g_la_map[i][j] == 'E' || g_la_map[i][j] == 'S')
 			{
-				if ((la_map[i - 1][j] == ' ') || (la_map[i + 1][j] == ' ')
-					|| (la_map[i][j - 1] == ' ') || (la_map[i][j + 1] == ' '))
+				if ((g_la_map[i - 1][j] == ' ') || (g_la_map[i + 1][j] == ' ')
+					|| (g_la_map[i][j - 1] == ' ') || (g_la_map[i][j + 1] == ' '))
 					ft_error_massege("Error\n map non fermer en ligne 3");
-				if (j > strlen(la_map[i - 1]))
+				if (j > strlen(g_la_map[i - 1]))
 					ft_error_massege("Error\n map non fermerrr2");
 			}
 			j++;
@@ -358,15 +358,15 @@ void	ft_addspace3(int i, int k, int j, char **stre)
 	int		l;
 
 	l = 0;
-	while (j < highest_ligne + 2)
+	while (j < g_highest_ligne + 2)
 	{
 		if (j == 0)
 			stre[i][j] = ' ';
 		else
 		{
-			if (la_map[k][l] != '\0' && l < ft_strlen(la_map[k]))
+			if (g_la_map[k][l] != '\0' && l < ft_strlen(g_la_map[k]))
 			{
-				stre[i][j] = la_map[k][l];
+				stre[i][j] = g_la_map[k][l];
 				l++;
 			}
 			else
@@ -385,13 +385,13 @@ int		ft_addspace2(int i, char **stre)
 
 	k = -1;
 	i = 0;
-	while (i < highest_colone + 2)
+	while (i < g_highest_colone + 2)
 	{
 		j = 0;
 		l = 0;
-		if (i == 0 || i == highest_colone + 1)
+		if (i == 0 || i == g_highest_colone + 1)
 		{
-			while (j < highest_ligne + 2)
+			while (j < g_highest_ligne + 2)
 			{
 				stre[i][j] = ' ';
 				j++;
@@ -414,24 +414,24 @@ void	ft_addspace(void)
 
 	i = 0;
 	j = 0;
-	if (!(stre = (char **)malloc(sizeof(char *) * ((highest_colone + 2 + 1)))))
+	if (!(stre = (char **)malloc(sizeof(char *) * ((g_highest_colone + 2 + 1)))))
 		ft_error_massege("Error\n Pas bien alloué");
-	while (i < highest_colone + 2)
+	while (i < g_highest_colone + 2)
 	{
-		if (!(stre[i] = (char *)malloc(sizeof(char *) * ((highest_ligne + 2 + 1)))))
+		if (!(stre[i] = (char *)malloc(sizeof(char *) * ((g_highest_ligne + 2 + 1)))))
 			ft_error_massege("Error\n Pas bien alloué");
 		i++;
 	}
 	i = ft_addspace2(i, stre);
 	stre[i] = 0;
-	ft_free(la_map, highest_colone);
+	ft_free(g_la_map, g_highest_colone);
 	j = -1;
-	if (!(la_map = (char **)malloc(sizeof(char *) * ((highest_colone + 2 + 1)))))
+	if (!(g_la_map = (char **)malloc(sizeof(char *) * ((g_highest_colone + 2 + 1)))))
 		ft_error_massege("Error\nPas bien alloué");
-	while (++j < highest_colone + 2)
-		la_map[j] = ft_strdup(stre[j]);
-	la_map[j] = 0;
-	ft_free(stre, highest_colone);
+	while (++j < g_highest_colone + 2)
+		g_la_map[j] = ft_strdup(stre[j]);
+	g_la_map[j] = 0;
+	ft_free(stre, g_highest_colone);
 }
 
 void	ft_countmap(void)
@@ -443,17 +443,17 @@ void	ft_countmap(void)
 	l = 0;
 	k = 0;
 	i = 1;
-	highest_ligne = 0;
-	while (la_map[i] != '\0')
+	g_highest_ligne = 0;
+	while (g_la_map[i] != '\0')
 	{
-		l = ft_strlen(la_map[i]);
-		if (highest_ligne < l)
-			highest_ligne = l;
+		l = ft_strlen(g_la_map[i]);
+		if (g_highest_ligne < l)
+			g_highest_ligne = l;
 		i++;
 	}
-	highest_colone = ft_tablen(la_map);
-	WINDOW_HIGHT = highest_ligne * TILE_SIZE;
-	WINDOW_WIDTH = highest_colone * TILE_SIZE;
+	g_highest_colone = ft_tablen(g_la_map);
+	g_w_height = g_highest_ligne * g_tile_size;
+	g_w_width = g_highest_colone * g_tile_size;
 	ft_addspace();
 }
 
@@ -465,13 +465,13 @@ void	ft_count_players()
 
 	compt = 0;
 	i = 0;
-	while (la_map[i] != '\0')
+	while (g_la_map[i] != '\0')
 	{
 		j = 0;
-		while (la_map[i][j] != '\0')
+		while (g_la_map[i][j] != '\0')
 		{
-			if (la_map[i][j] == 'N' || la_map[i][j] == 'E'
-				|| la_map[i][j] == 'W' || la_map[i][j] == 'S')
+			if (g_la_map[i][j] == 'N' || g_la_map[i][j] == 'E'
+				|| g_la_map[i][j] == 'W' || g_la_map[i][j] == 'S')
 				compt++;
 			j++;
 		}
@@ -489,13 +489,13 @@ void	ft_error_map_c(void)
 	int		j;
 
 	i = 0;
-	while (la_map[i] != '\0')
+	while (g_la_map[i] != '\0')
 	{
 		j = 0;
-		while (la_map[i][j] != '\0')
+		while (g_la_map[i][j] != '\0')
 		{
-			if (la_map[i][j] == '1' || la_map[i][j] == '0' || la_map[i][j] == '2' || la_map[i][j] == ' '
-				|| la_map[i][j] == 'W' || la_map[i][j] == 'S' || la_map[i][j] == 'E' || la_map[i][j] == 'N')
+			if (g_la_map[i][j] == '1' || g_la_map[i][j] == '0' || g_la_map[i][j] == '2' || g_la_map[i][j] == ' '
+				|| g_la_map[i][j] == 'W' || g_la_map[i][j] == 'S' || g_la_map[i][j] == 'E' || g_la_map[i][j] == 'N')
 				j++;
 			else
 				ft_error_massege("Error\nCarraterre mal mit sur la map !!");
@@ -510,12 +510,12 @@ void	ft_count_sprite(void)
 	int		j;
 
 	i = 0;
-	while (la_map[i] != '\0')
+	while (g_la_map[i] != '\0')
 	{
 		j = 0;
-		while (la_map[i][j] != '\0')
+		while (g_la_map[i][j] != '\0')
 		{
-			if (la_map[i][j] == '2')
+			if (g_la_map[i][j] == '2')
 				g_s_count++;
 			j++;
 		}
@@ -539,24 +539,24 @@ void	ft_traitement_map(char *line, int j)
 
 	if (ft_check_param() == 0)
 		ft_error_massege("Error\nun des param n est pas mit !");
-	if (!join)
-		join = ft_strdup("");
+	if (!g_join)
+		g_join = ft_strdup("");
 	if (line && j != 0)
 	{
-		str = ft_strjoin(join, line);
-		free(join);
-		join = ft_strjoin(str, "\n");
+		str = ft_strjoin(g_join, line);
+		free(g_join);
+		g_join = ft_strjoin(str, "\n");
 		free(str);
 	}
-	if (j == 0 && join)
+	if (j == 0 && g_join)
 	{
-		str = ft_strjoin(join, line);
-		free(join);
-		join = ft_strjoin(str, "\n");
+		str = ft_strjoin(g_join, line);
+		free(g_join);
+		g_join = ft_strjoin(str, "\n");
 		free(str);
-		la_map = ft_split(join, '\n');
+		g_la_map = ft_split(g_join, '\n');
 		ft_countmap();
-		free(join);
+		free(g_join);
 		ft_get_error_map();
 	}
 }
@@ -576,27 +576,27 @@ void	ft_traitement(char *line, int j)
 
 void	ft_initialisation(void)
 {
-	map.x = 0;
-	map.y = 0;
-	map.WE = ft_strdup("");
-	map.NO = ft_strdup("");
-	map.SO = ft_strdup("");
-	map.EA = ft_strdup("");
-	map.S = ft_strdup("");
-	F.a = -1;
-	F.b = -1;
-	F.c = -1;
-	C.a = -1;
-	C.b = -1;
-	C.c = -1;
-	compt.c = 0;
-	compt.f = 0;
-	compt.no = 0;
-	compt.ea = 0;
-	compt.s = 0;
-	compt.so = 0;
-	compt.we = 0;
-	compt.r = 0;
+	g_map.x = 0;
+	g_map.y = 0;
+	g_map.WE = ft_strdup("");
+	g_map.NO = ft_strdup("");
+	g_map.SO = ft_strdup("");
+	g_map.EA = ft_strdup("");
+	g_map.S = ft_strdup("");
+	g_floor.a = -1;
+	g_floor.b = -1;
+	g_floor.c = -1;
+	g_ceil.a = -1;
+	g_ceil.b = -1;
+	g_ceil.c = -1;
+	g_compt.c = 0;
+	g_compt.f = 0;
+	g_compt.no = 0;
+	g_compt.ea = 0;
+	g_compt.s = 0;
+	g_compt.so = 0;
+	g_compt.we = 0;
+	g_compt.r = 0;
 	g_s_count = 0;
 }
 
