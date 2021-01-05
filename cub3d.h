@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 18:51:44 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/05 14:31:21 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,13 @@
 typedef struct	s_dimention {
 	int		x;
 	int		y;
-	char	*WE;
-	char	*NO;
-	char	*SO;
-	char	*EA;
-	char	*S;
+	char	*we;
+	char	*no;
+	char	*so;
+	char	*ea;
+	char	*s;
+	char	*cub;
+	int		save;
 }				t_dimention;
 
 typedef struct	s_data {
@@ -37,6 +39,8 @@ typedef struct	s_data {
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int		width;
+	int		height;
 }				t_data;
 
 typedef struct	s_colors {
@@ -52,21 +56,21 @@ typedef struct	s_point {
 }				t_point;
 
 typedef struct	s_ray {
-	int		FacingDown;
-	int		FacingUp;
-	int		FacingRight;
-	int		FacingLeft;
+	int		facingdown;
+	int		facingup;
+	int		facingright;
+	int		facingleft;
 }				t_ray;
 
 typedef struct	s_wallhit{
-	float	Horiz_X;
-	float	Horiz_Y;
-	float	Verti_X;
-	float	Verti_Y;
-	float	X;
-	float	Y;
+	float	horiz_x;
+	float	horiz_y;
+	float	verti_x;
+	float	verti_y;
+	float	x;
+	float	y;
 	float	distance;
-	float	Angle;
+	float	angle;
 }				t_wallhit;
 
 typedef struct	s_texture{
@@ -110,6 +114,10 @@ t_dimention		g_map;
 t_colors		g_floor;
 t_colors		g_ceil;
 t_texture		g_textures;
+t_data			g_we;
+t_data			g_ea;
+t_data			g_no;
+t_data			g_so;
 t_data			g_texture;
 t_sprite		*g_sprite;
 char	**g_la_map;
@@ -151,8 +159,8 @@ int		ft_checkispath(char *str);
 char	*ft_alloue_free(char *s1, char *s2);
 void	ft_help_path(char **words);
 void	ft_traitement_path(char *line);
-void	ft_help_2_colors(char S, int a, int b, int c);
-void	ft_help_colors(char **words, char S);
+void	ft_help_2_colors(char s, int a, int b, int c);
+void	ft_help_colors(char **words, char s);
 void	ft_traitement_colors(char *line);
 void	ft_traitement_config(char *line);
 int		ft_tablen(char **str);

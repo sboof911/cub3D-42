@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 15:38:28 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 18:49:52 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/05 12:46:39 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	ft_error_massege(char *str)
 
 int		ft_check_param(void)
 {
-	if (g_map.x && g_map.y && g_map.WE[0] != 0 && g_map.NO[0] != 0
-		&& g_map.SO[0] != 0 && g_map.EA[0] != 0 && g_floor.a >= 0
+	if (g_map.x && g_map.y && g_map.we[0] != 0 && g_map.no[0] != 0
+		&& g_map.so[0] != 0 && g_map.ea[0] != 0 && g_floor.a >= 0
 		&& g_floor.b >= 0 && g_floor.c >= 0 && g_ceil.a >= 0
 		&& g_ceil.b >= 0 && g_ceil.c >= 0)
 		return (1);
@@ -116,19 +116,19 @@ void	ft_help_path(char **words)
 	{
 		if (words[0][0] == 'W' && words[0][1] == 'E'
 			&& words[0][2] == '\0' && (++g_compt.we))
-			g_map.WE = ft_alloue_free(g_map.WE, words[1]);
+			g_map.we = ft_alloue_free(g_map.we, words[1]);
 		else if (words[0][0] == 'N' && words[0][1] == 'O'
 				&& words[0][2] == '\0' && (++g_compt.no))
-			g_map.NO = ft_alloue_free(g_map.NO, words[1]);
+			g_map.no = ft_alloue_free(g_map.no, words[1]);
 		else if (words[0][0] == 'E' && words[0][1] == 'A'
 				&& words[0][2] == '\0' && (++g_compt.ea))
-			g_map.EA = ft_alloue_free(g_map.EA, words[1]);
+			g_map.ea = ft_alloue_free(g_map.ea, words[1]);
 		else if (words[0][0] == 'S' && words[0][1] == 'O'
 				&& words[0][2] == '\0' && (++g_compt.so))
-			g_map.SO = ft_alloue_free(g_map.SO, words[1]);
+			g_map.so = ft_alloue_free(g_map.so, words[1]);
 		else if (words[0][0] == 'S' && words[0][1] == '\0'
 				&& (++g_compt.s))
-			g_map.S = ft_alloue_free(g_map.S, words[1]);
+			g_map.s = ft_alloue_free(g_map.s, words[1]);
 		else
 			ft_error_massege("Error\nSyntax ERROR");
 	}
@@ -152,11 +152,11 @@ void	ft_traitement_path(char *line)
 	ft_free(words, ft_tablen(words));
 }
 
-void	ft_help_2_colors(char S, int a, int b, int c)
+void	ft_help_2_colors(char s, int a, int b, int c)
 {
 	if (a > 255 || b > 255 || c > 255)
 		ft_error_massege("Error\nCouleur est supperieur a 255 svp de la regler");
-	if (S == 'C')
+	if (s == 'C')
 	{
 		g_compt.c++;
 		g_ceil.color = a << 16 | b << 8 | c;
@@ -192,7 +192,7 @@ void	ft_check_virgule(char *words)
 		ft_error_massege("Error\ntrop de virgule");
 }
 
-void	ft_help_colors(char **words, char S)
+void	ft_help_colors(char **words, char s)
 {
 	int		a;
 	int		b;
@@ -218,7 +218,7 @@ void	ft_help_colors(char **words, char S)
 	else
 		ft_error_massege("Error\nCarractere mal mit en couleur");
 	ft_free(colors, ft_tablen(colors));
-	ft_help_2_colors(S, a, b, c);
+	ft_help_2_colors(s, a, b, c);
 }
 
 void	ft_traitement_colors(char *line)
@@ -578,11 +578,11 @@ void	ft_initialisation(void)
 {
 	g_map.x = 0;
 	g_map.y = 0;
-	g_map.WE = ft_strdup("");
-	g_map.NO = ft_strdup("");
-	g_map.SO = ft_strdup("");
-	g_map.EA = ft_strdup("");
-	g_map.S = ft_strdup("");
+	g_map.we = ft_strdup("");
+	g_map.no = ft_strdup("");
+	g_map.so = ft_strdup("");
+	g_map.ea = ft_strdup("");
+	g_map.s = ft_strdup("");
 	g_floor.a = -1;
 	g_floor.b = -1;
 	g_floor.c = -1;
@@ -610,7 +610,7 @@ void	ft_readmap(void)
 	i = 0;
 	j = 0;
 	ft_initialisation();
-	fd = open("maps.cub", O_RDONLY);
+	fd = open(g_map.cub, O_RDONLY);
 	if (fd < 1)
 		ft_error_massege("Error\nFicher non lit");
 	while (1)
@@ -621,4 +621,5 @@ void	ft_readmap(void)
 		if (i == 0)
 			break;
 	}
+	free(g_map.cub);
 }

@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 15:25:13 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 18:48:11 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/05 09:55:28 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void    init_sprite(void)
     k = 0;
     i = -1;
     g_sprite  = malloc(sizeof(t_sprite) * (g_s_count));
-    g_texture.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.S, &g_textures.width, &g_textures.height);
+    g_texture.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.s, &g_textures.width, &g_textures.height);
     g_texture.addr = mlx_get_data_addr(g_texture.img, &g_texture.bits_per_pixel, &g_texture.line_length, &g_texture.endian);
     while(g_la_map[++i] && (k < g_s_count))
     {
@@ -32,8 +32,8 @@ void    init_sprite(void)
         {
             if(g_la_map[i][j] == '2')
             {
-                g_sprite[k].x = (float)((j + 0.5) * 64);
-                g_sprite[k].y = (float)((i + 0.5) * 64);
+                g_sprite[k].x = (float)((j + 0.5) * g_tile_size);
+                g_sprite[k].y = (float)((i + 0.5) * g_tile_size);
                 g_sprite[k].dist = sqrtf(((g_sprite[k].x) - g_player.x) * ((g_sprite[k].x)
 					- g_player.x) + ((g_sprite[k].y) - g_player.y) * ((g_sprite[k].y) - g_player.y));
 				k++;

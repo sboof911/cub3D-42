@@ -6,29 +6,29 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:55:59 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 18:49:07 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/05 15:33:07 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	ft_check_texture(int textoffset_x, int textoffset_y, int i, float y)
+void	ft_check_texture(int toffset_x, int toffset_y, int i, float y)
 {
 	int		color;
 
 	if (g_washitverti == 1)
 	{
-		if (g_ray.FacingLeft)
-			color = g_textures.ea[(g_textures.width * textoffset_y) + textoffset_x];
+		if (g_ray.facingleft)
+			color = g_textures.ea[(g_ea.width * toffset_y) + toffset_x];
 		else
-			color = g_textures.we[(g_textures.width * textoffset_y) + textoffset_x];
+			color = g_textures.we[(g_we.width * toffset_y) + toffset_x];
 	}
 	else
 	{
-		if (g_ray.FacingUp)
-			color = g_textures.no[(g_textures.width * textoffset_y) + textoffset_x];
+		if (g_ray.facingup)
+			color = g_textures.no[(g_no.width * toffset_y) + toffset_x];
 		else
-			color = g_textures.so[(g_textures.width * textoffset_y) + textoffset_x];
+			color = g_textures.so[(g_so.width * toffset_y) + toffset_x];
 	}
 	my_mlx_pixel_put(&g_img, i, y, color);
 }
@@ -49,8 +49,10 @@ void	ft_textures(int i, float walltop, float wallbot, float wallstripheight)
 	{
 		distancefromtop = y + (wallstripheight / 2) - (g_map.y / 2);
 		textureoffset_y = distancefromtop *
-						((float)g_textures.height / wallstripheight);
-		ft_check_texture(textureoffset_x, textureoffset_y, i, y);
+						((float)64 / wallstripheight);
+		if (!(textureoffset_x < 0 || textureoffset_x > g_map.x
+			|| textureoffset_y < 0 || textureoffset_y > g_map.y))
+			ft_check_texture(textureoffset_x, textureoffset_y, i, y);
 		y++;
 	}
 }

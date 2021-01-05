@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 11:38:43 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 18:48:11 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/05 15:15:00 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	dda(float X0, float Y0, float X1, float Y1, unsigned int long long str)
 	dx = X1 - X0;
 	dy = Y1 - Y0;
 	steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
+	if (steps < 1)
+		steps = 1;
 	Xinc = dx / (float) steps;
 	Yinc = dy / (float) steps;
 	X = X0;
@@ -252,38 +254,35 @@ void	initialisation(void)
 	g_position.y = 0;
 	g_walk_direction = 0;
 	g_turn_direction = 0;
+	g_map.save = 0;
 }
 
 void	ft_initia_texture(void)
 {
-	g_texture.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.WE,
-					&g_textures.width, &g_textures.height);
-	if (g_texture.img == NULL)
+	g_we.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.we,
+					&g_we.width, &g_we.height);
+	if (g_we.img == NULL)
 		ft_error_massege("Texture west est vide !!");
-	g_texture.addr = mlx_get_data_addr(g_texture.img, &g_texture.bits_per_pixel,
-					&g_texture.line_length, &g_texture.endian);
-	g_textures.we = (int *)g_texture.addr;
-	g_texture.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.SO,
-					&g_textures.width, &g_textures.height);
-	if (g_texture.img == NULL)
+	g_textures.we = (int *)mlx_get_data_addr(g_we.img,
+		&g_we.bits_per_pixel, &g_we.line_length, &g_we.endian);
+	g_so.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.so,
+					&g_so.width, &g_so.height);
+	if (g_so.img == NULL)
 		ft_error_massege("Texture south est vide !!");
-	g_texture.addr = mlx_get_data_addr(g_texture.img, &g_texture.bits_per_pixel,
-					&g_texture.line_length, &g_texture.endian);
-	g_textures.so = (int *)g_texture.addr;
-	g_texture.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.NO, &g_textures.width,
-					&g_textures.height);
-	if (g_texture.img == NULL)
+	g_textures.so = (int *)mlx_get_data_addr(g_so.img,
+		&g_so.bits_per_pixel, &g_so.line_length, &g_so.endian);
+	g_no.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.no,
+					&g_no.width, &g_no.height);
+	if (g_no.img == NULL)
 		ft_error_massege("Texture north est vide !!");
-	g_texture.addr = mlx_get_data_addr(g_texture.img, &g_texture.bits_per_pixel,
-					&g_texture.line_length, &g_texture.endian);
-	g_textures.no = (int *)g_texture.addr;
-	g_texture.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.EA, &g_textures.width,
-					&g_textures.height);
-	if (g_texture.img == NULL)
+	g_textures.no = (int *)mlx_get_data_addr(g_no.img,
+		&g_no.bits_per_pixel, &g_no.line_length, &g_no.endian);
+	g_ea.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.ea,
+					&g_ea.width, &g_ea.height);
+	if (g_ea.img == NULL)
 		ft_error_massege("Texture east est vide !!");
-	g_texture.addr = mlx_get_data_addr(g_texture.img, &g_texture.bits_per_pixel,
-					&g_texture.line_length, &g_texture.endian);
-	g_textures.ea = (int *)g_texture.addr;
+	g_textures.ea = (int *)mlx_get_data_addr(g_ea.img,
+		&g_ea.bits_per_pixel, &g_ea.line_length, &g_ea.endian);
 }
 
 int		ft_exit_x(void)
@@ -291,9 +290,34 @@ int		ft_exit_x(void)
 	exit(0);
 }
 
-int		main(void)
+void	ft_gere_arg(int argc, char **argv)
+{
+	char	*str;
+	int		i;
+
+	i = 0;
+	if (argc < 2 || argc > 3)
+		ft_error_massege("Error\nNombre d'argument non compatible");
+	str = ft_strrev(argv[1]);
+	if (str[0] == 'b' && str[1] == 'u' && str[2] == 'c' && str[3] == '.')
+		g_map.cub = ft_strdup(ft_strrev(argv[1]));
+	else
+		ft_error_massege("Error\nL extension .cub est mal mit");
+	if (argc == 3)
+	{
+		if (argv[2][0] == '-' && argv[2][1] == '-' && argv[2][2] == 's'
+			&& argv[2][3] == 'a' && argv[2][4] == 'v'
+			&& argv[2][5] == 'e' && argv[2][6] == '\0')
+			g_map.save = 1;
+		else
+			ft_error_massege("Error\nArgument save pas bien ecrit");
+	}
+}
+
+int		main(int argc, char **argv)
 {
 	initialisation();
+	ft_gere_arg(argc, argv);
 	ft_readmap();
 	g_mlx_ptr = mlx_init();
 	g_win_ptr = mlx_new_window(g_mlx_ptr, g_map.x, g_map.y, "sboof");

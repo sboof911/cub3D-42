@@ -1,1 +1,1 @@
-gcc -I /usr/local/include *.c -L /usr/local/lib/ -lmlx -framework OpenGL -framework Appkit -O3 -g; ./a.out
+gcc -I /usr/local/include *.c -L /usr/local/lib/ -lmlx -framework OpenGL -framework Appkit -g; ./a.out maps.cub
