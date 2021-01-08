@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 16:09:02 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/04 18:55:35 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/08 17:12:11 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,17 @@ void	ft_caldistance(int i)
 		g_wallhitvertidist = INT_MAX;
 	if (g_wallhithorizdist < g_wallhitvertidist)
 	{
-		g_wallhit.distance = g_wallhithorizdist;
-		g_wallhit.x = g_wallhit.horiz_x;
-		g_wallhit.y = g_wallhit.horiz_y;
+		g_tab[i][0] = g_wallhithorizdist;
+		g_tab[i][1] = g_wallhit.horiz_x;
+		g_tab[i][2] = g_wallhit.horiz_y;
 	}
 	else
 	{
 		g_washitverti = 1;
-		g_wallhit.distance = g_wallhitvertidist;
-		g_wallhit.x = g_wallhit.verti_x;
-		g_wallhit.y = g_wallhit.verti_y;
+		g_tab[i][0] = g_wallhitvertidist;
+		g_tab[i][1] = g_wallhit.verti_x;
+		g_tab[i][2] = g_wallhit.verti_y;
 	}
-	g_tab[i][0] = g_wallhit.distance;
-	g_tab[i][1] = g_wallhit.x;
-	g_tab[i][2] = g_wallhit.y;
 }
 
 void	ft_facing(float k)
@@ -89,14 +86,32 @@ int		istheirawall(float x, float y, int k)
 	return (0);
 }
 
+void	ft_verti2(float nextvt_x, float nextvt_y, float x_stepv, float y_stepv)
+{
+	while (nextvt_y >= 0 && nextvt_y <= g_w_width
+			&& nextvt_x >= 0 && nextvt_x <= g_w_height)
+	{
+		if (istheirawall(nextvt_x, nextvt_y, 1) == 1)
+		{
+			g_foundavertiwallhit = 1;
+			g_wallhit.verti_x = nextvt_x;
+			g_wallhit.verti_y = nextvt_y;
+			break ;
+		}
+		else
+		{
+			nextvt_y += y_stepv;
+			nextvt_x += x_stepv;
+		}
+	}
+}
+
 void	ft_vertical(float rayangle)
 {
 	float	x_stepv;
 	float	y_stepv;
 	float	x_intercept;
 	float	y_intercept;
-	float	NextVertiTouch_x;
-	float	NextVertiTouch_y;
 
 	x_stepv = 0;
 	y_stepv = 0;
@@ -114,22 +129,25 @@ void	ft_vertical(float rayangle)
 		y_stepv *= -1;
 	if (g_ray.facingdown == 1 && y_stepv < 0)
 		y_stepv *= -1;
-	NextVertiTouch_x = x_intercept;
-	NextVertiTouch_y = y_intercept;
-	while (NextVertiTouch_y >= 0 && NextVertiTouch_y <= g_w_width
-			&& NextVertiTouch_x >= 0 && NextVertiTouch_x <= g_w_height)
+	ft_verti2(x_intercept, y_intercept, x_stepv, y_stepv);
+}
+
+void	ft_horiz2(float nextht_x, float nextht_y, float x_steph, float y_steph)
+{
+	while (nextht_y >= 0 && nextht_y <= g_w_width
+			&& nextht_x >= 0 && nextht_x <= g_w_height)
 	{
-		if (istheirawall(NextVertiTouch_x, NextVertiTouch_y, 1) == 1)
+		if (istheirawall(nextht_x, nextht_y, 2) == 1)
 		{
-			g_foundavertiwallhit = 1;
-			g_wallhit.verti_x = NextVertiTouch_x;
-			g_wallhit.verti_y = NextVertiTouch_y;
+			g_foundahorizwallhit = 1;
+			g_wallhit.horiz_x = nextht_x;
+			g_wallhit.horiz_y = nextht_y;
 			break ;
 		}
 		else
 		{
-			NextVertiTouch_y += y_stepv;
-			NextVertiTouch_x += x_stepv;
+			nextht_x += x_steph;
+			nextht_y += y_steph;
 		}
 	}
 }
@@ -140,8 +158,6 @@ void	ft_horizontal(float rayangle)
 	float	y_steph;
 	float	x_intercept;
 	float	y_intercept;
-	float	NextHorizTouch_x;
-	float	NextHorizTouch_y;
 
 	x_steph = 0;
 	y_steph = 0;
@@ -159,24 +175,7 @@ void	ft_horizontal(float rayangle)
 		x_steph *= -1;
 	if (g_ray.facingright == 1 && x_steph < 0)
 		x_steph *= -1;
-	NextHorizTouch_x = x_intercept;
-	NextHorizTouch_y = y_intercept;
-	while (NextHorizTouch_y >= 0 && NextHorizTouch_y <= g_w_width
-			&& NextHorizTouch_x >= 0 && NextHorizTouch_x <= g_w_height)
-	{
-		if (istheirawall(NextHorizTouch_x, NextHorizTouch_y, 2) == 1)
-		{
-			g_foundahorizwallhit = 1;
-			g_wallhit.horiz_x = NextHorizTouch_x;
-			g_wallhit.horiz_y = NextHorizTouch_y;
-			break ;
-		}
-		else
-		{
-			NextHorizTouch_x += x_steph;
-			NextHorizTouch_y += y_steph;
-		}
-	}
+	ft_horiz2(x_intercept, y_intercept, x_steph, y_steph);
 }
 
 void	ft_initialisationray(void)

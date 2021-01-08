@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/08 16:29:18 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/08 16:58:12 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ int		g_key_prl;
 int		g_key_prl1;
 int		g_key;
 int		g_highest_ligne;
-int		g_highest_colone;
+int		g_high_colone;
 int		g_check_playerdraw;
 int		g_foundavertiwallhit;
 int		g_foundahorizwallhit;

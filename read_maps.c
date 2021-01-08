@@ -6,12 +6,11 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 15:38:28 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/08 14:16:09 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/08 17:35:01 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
 
 int		ft_tablen(char **str)
 {
@@ -155,7 +154,7 @@ void	ft_traitement_path(char *line)
 void	ft_help_2_colors(char s, int a, int b, int c)
 {
 	if (a > 255 || b > 255 || c > 255)
-		ft_error_massege("Error\nCouleur est supperieur a 255 svp de la regler");
+		ft_error_massege("Error\nCouleur est supp a 255");
 	if (s == 'C')
 	{
 		g_compt.c++;
@@ -172,7 +171,6 @@ void	ft_help_2_colors(char s, int a, int b, int c)
 		g_floor.b = b;
 		g_floor.c = c;
 	}
-	
 }
 
 void	ft_check_virgule(char *words)
@@ -182,7 +180,7 @@ void	ft_check_virgule(char *words)
 
 	i = 0;
 	compt = 0;
-	while(words[i] != '\0')
+	while (words[i] != '\0')
 	{
 		if (words[i] == ',')
 			compt++;
@@ -268,7 +266,7 @@ void	ft_traitement_config(char *line)
 	i = 0;
 	if (line[i] == 'R')
 		ft_traitement_resolution(line);
-	else if (line[i] == 'W' || line[i] == 'N' || line[i] == 'S' 
+	else if (line[i] == 'W' || line[i] == 'N' || line[i] == 'S'
 			|| line[i] == 'E' || line[i] == 'S')
 		ft_traitement_path(line);
 	else if (line[i] == 'F' || line[i] == 'C')
@@ -277,7 +275,6 @@ void	ft_traitement_config(char *line)
 		ft_error_massege("Error\nquelque chose ne vas pas au ficher!!");
 	ft_check_double();
 }
-
 
 void	ft_error_colones(void)
 {
@@ -338,11 +335,13 @@ void	ft_error_zero(void)
 		j = 1;
 		while (j < ft_strlen(g_la_map[i]) - 1)
 		{
-			if (g_la_map[i][j] == '0' || g_la_map[i][j] == '2' || g_la_map[i][j] == 'N'
-				|| g_la_map[i][j] == 'W' || g_la_map[i][j] == 'E' || g_la_map[i][j] == 'S')
+			if (g_la_map[i][j] == '0' || g_la_map[i][j] == '2'
+				|| g_la_map[i][j] == 'N' || g_la_map[i][j] == 'W'
+				|| g_la_map[i][j] == 'E' || g_la_map[i][j] == 'S')
 			{
 				if ((g_la_map[i - 1][j] == ' ') || (g_la_map[i + 1][j] == ' ')
-					|| (g_la_map[i][j - 1] == ' ') || (g_la_map[i][j + 1] == ' '))
+					|| (g_la_map[i][j - 1] == ' ')
+					|| (g_la_map[i][j + 1] == ' '))
 					ft_error_massege("Error\n map non fermer en ligne 3");
 				if (j > strlen(g_la_map[i - 1]))
 					ft_error_massege("Error\n map non fermerrr2");
@@ -385,11 +384,11 @@ int		ft_addspace2(int i, char **stre)
 
 	k = -1;
 	i = 0;
-	while (i < g_highest_colone + 2)
+	while (i < g_high_colone + 2)
 	{
 		j = 0;
 		l = 0;
-		if (i == 0 || i == g_highest_colone + 1)
+		if (i == 0 || i == g_high_colone + 1)
 		{
 			while (j < g_highest_ligne + 2)
 			{
@@ -412,26 +411,27 @@ void	ft_addspace(void)
 	int		i;
 	int		j;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	if (!(stre = (char **)malloc(sizeof(char *) * ((g_highest_colone + 2 + 1)))))
+	if (!(stre = (char **)malloc(sizeof(char *) * ((g_high_colone + 2 + 1)))))
 		ft_error_massege("Error\n Pas bien alloué");
-	while (i < g_highest_colone + 2)
+	while (++i < g_high_colone + 2)
 	{
-		if (!(stre[i] = (char *)malloc(sizeof(char *) * ((g_highest_ligne + 2 + 1)))))
+		if (!(stre[i] = (char *)malloc(sizeof(char *) *
+			((g_highest_ligne + 2 + 1)))))
 			ft_error_massege("Error\n Pas bien alloué");
-		i++;
 	}
 	i = ft_addspace2(i, stre);
 	stre[i] = 0;
-	ft_free(g_la_map, g_highest_colone);
+	ft_free(g_la_map, g_high_colone);
 	j = -1;
-	if (!(g_la_map = (char **)malloc(sizeof(char *) * ((g_highest_colone + 2 + 1)))))
+	if (!(g_la_map = (char **)malloc(sizeof(char *)
+		* ((g_high_colone + 2 + 1)))))
 		ft_error_massege("Error\nPas bien alloué");
-	while (++j < g_highest_colone + 2)
+	while (++j < g_high_colone + 2)
 		g_la_map[j] = ft_strdup(stre[j]);
 	g_la_map[j] = 0;
-	ft_free(stre, g_highest_colone);
+	ft_free(stre, g_high_colone + 2);
 }
 
 void	ft_countmap(void)
@@ -451,13 +451,13 @@ void	ft_countmap(void)
 			g_highest_ligne = l;
 		i++;
 	}
-	g_highest_colone = ft_tablen(g_la_map);
+	g_high_colone = ft_tablen(g_la_map);
 	g_w_height = g_highest_ligne * g_tile_size;
-	g_w_width = g_highest_colone * g_tile_size;
+	g_w_width = g_high_colone * g_tile_size;
 	ft_addspace();
 }
 
-void	ft_count_players()
+void	ft_count_players(void)
 {
 	int		i;
 	int		j;
@@ -494,8 +494,10 @@ void	ft_error_map_c(void)
 		j = 0;
 		while (g_la_map[i][j] != '\0')
 		{
-			if (g_la_map[i][j] == '1' || g_la_map[i][j] == '0' || g_la_map[i][j] == '2' || g_la_map[i][j] == ' '
-				|| g_la_map[i][j] == 'W' || g_la_map[i][j] == 'S' || g_la_map[i][j] == 'E' || g_la_map[i][j] == 'N')
+			if (g_la_map[i][j] == '1' || g_la_map[i][j] == '0'
+				|| g_la_map[i][j] == '2' || g_la_map[i][j] == ' '
+				|| g_la_map[i][j] == 'W' || g_la_map[i][j] == 'S'
+				|| g_la_map[i][j] == 'E' || g_la_map[i][j] == 'N')
 				j++;
 			else
 				ft_error_massege("Error\nCarraterre mal mit sur la map !!");
@@ -619,7 +621,7 @@ void	ft_readmap(void)
 		ft_traitement(line, i);
 		free(line);
 		if (i == 0)
-			break;
+			break ;
 	}
 	free(g_map.cub);
 }
