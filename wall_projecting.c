@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:55:59 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/05 15:33:07 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/08 12:20:21 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,28 @@
 void	ft_check_texture(int toffset_x, int toffset_y, int i, float y)
 {
 	int		color;
+	int		d;
 
+	d = (64 * toffset_y) + toffset_x;
+	if (d < 0)
+		d = abs(d);
+	if (d >= 64 * 64)
+		d = 64 * 63;
 	if (g_washitverti == 1)
 	{
 		if (g_ray.facingleft)
-			color = g_textures.ea[(g_ea.width * toffset_y) + toffset_x];
+			color = g_textures.ea[d];
 		else
-			color = g_textures.we[(g_we.width * toffset_y) + toffset_x];
+			color = g_textures.we[d];
 	}
 	else
 	{
 		if (g_ray.facingup)
-			color = g_textures.no[(g_no.width * toffset_y) + toffset_x];
+			color = g_textures.no[d];
 		else
-			color = g_textures.so[(g_so.width * toffset_y) + toffset_x];
+			color = g_textures.so[d];
 	}
-	my_mlx_pixel_put(&g_img, i, y, color);
+	my_mlx_pixel_put(i, y, color);
 }
 
 void	ft_textures(int i, float walltop, float wallbot, float wallstripheight)
@@ -50,9 +56,7 @@ void	ft_textures(int i, float walltop, float wallbot, float wallstripheight)
 		distancefromtop = y + (wallstripheight / 2) - (g_map.y / 2);
 		textureoffset_y = distancefromtop *
 						((float)64 / wallstripheight);
-		if (!(textureoffset_x < 0 || textureoffset_x > g_map.x
-			|| textureoffset_y < 0 || textureoffset_y > g_map.y))
-			ft_check_texture(textureoffset_x, textureoffset_y, i, y);
+		ft_check_texture(textureoffset_x, textureoffset_y, i, y);
 		y++;
 	}
 }
@@ -60,14 +64,14 @@ void	ft_textures(int i, float walltop, float wallbot, float wallstripheight)
 float	renderprojectionwall(float k, float rotationangle)
 {
 	int		i;
-	float	correctdistance;
+	float	corrdist;
 	float	distanceprojeplane;
 	float	wallstripheight;
 	float	walltoppixel;
 	float	wallbotpixel;
 	float	rayangle;
 
-	correctdistance = 0;
+	corrdist = 0;
 	distanceprojeplane = 0;
 	wallstripheight = 0;
 	walltoppixel = 0;
@@ -79,8 +83,8 @@ float	renderprojectionwall(float k, float rotationangle)
 	while (i < g_map.x)
 	{
 		rayangle = ft_raycasting(rayangle, i);
-		correctdistance = g_tab[i][0] * cos(rayangle - (g_rotation * M_PI / 180));
-		wallstripheight = (g_tile_size / correctdistance) * distanceprojeplane;
+		corrdist = g_tab[i][0] * cos(rayangle - (g_rotation * M_PI / 180));
+		wallstripheight = (g_tile_size / corrdist) * distanceprojeplane;
 		walltoppixel = (g_map.y / 2) - (wallstripheight / 2);
 		wallbotpixel = (g_map.y / 2) + (wallstripheight / 2);
 		if (wallbotpixel > g_map.y)

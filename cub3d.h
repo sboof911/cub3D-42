@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/05 14:31:21 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/08 16:29:18 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,27 @@ typedef struct	s_sprite{
 	float	size;
 }				t_sprite;
 
+typedef	struct	s_bmp_header
+{
+	char		type[2];
+	u_int32_t	filesize;
+	u_int16_t	reserved1;
+	u_int16_t	reserved2;
+	u_int32_t	pxdataoff;
+	u_int32_t	headersize;
+	int32_t		width;
+	int32_t		height;
+	u_int16_t	planes;
+	u_int16_t	bpp;
+	u_int32_t	compression;
+	u_int32_t	imagesize;
+	int32_t		xpermeter;
+	int32_t		ypermeter;
+	u_int32_t	totalcolors;
+	u_int32_t	importantcolors;
+}				t_bmp_file;
+
+t_bmp_file		g_bmp;
 t_check			g_compt;
 t_wallhit		g_wallhit;
 t_ray			g_ray;
@@ -148,7 +169,7 @@ float	g_w_height;
 int		g_numberofrays;
 float	g_tab[5028][4];
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	my_mlx_pixel_put(int x, int y, int color);
 void	dda(float X0, float Y0, float X1, float Y1, unsigned int long long str);
 float	cddp(float x1, float y1, float x2, float y2);
 void	ft_error_massege(char *str);
@@ -179,4 +200,9 @@ void	draw_sprite(int id);
 void	to_sprite(void);
 void	to_sort(void);
 void	init_sprite(void);
+void	save_bmp(void);
+void	write_colors(int fd);
+void	header_write(int fd);
+void	header_initia(void);
+void	ft_bzero1(void *s, size_t n);
 #endif

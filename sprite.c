@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 15:25:13 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/05 09:55:28 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/08 12:08:42 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void    init_sprite(void)
     int i;
     int j;
     int k;
-	int w;
-	int h;
     
     k = 0;
     i = -1;
     g_sprite  = malloc(sizeof(t_sprite) * (g_s_count));
     g_texture.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.s, &g_textures.width, &g_textures.height);
+	if (g_texture.img == 0)
+		ft_error_massege("Error\nSprite est vide");
     g_texture.addr = mlx_get_data_addr(g_texture.img, &g_texture.bits_per_pixel, &g_texture.line_length, &g_texture.endian);
     while(g_la_map[++i] && (k < g_s_count))
     {
@@ -116,7 +116,7 @@ void    draw_sprite(int id)
 				continue ;
 			c = tabe[(int)((64) * (64 * j / (int)size) + (64 * i / (int)size))];
 			if (c != tabe[0])
-                my_mlx_pixel_put(&g_img, i + g_sprite[id].x_off ,j + g_sprite[id].y_off, c);
+                my_mlx_pixel_put(i + g_sprite[id].x_off ,j + g_sprite[id].y_off, c);
 		}
 	}
 }

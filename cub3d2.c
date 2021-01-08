@@ -6,13 +6,13 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 11:38:43 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/05 15:15:00 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/08 16:25:00 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void	my_mlx_pixel_put(int x, int y, int color)
 {
 	int		*dst;
 
@@ -20,22 +20,6 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 		&g_img.line_length, &g_img.endian);
 	if (x < g_map.x && y < g_map.y && x >= 0 && y >= 0)
 		dst[y * (int)g_map.x + x] = color;
-}
-
-void	draw_tile(void)
-{
-	float i;
-	float j;
-
-	i = g_position.x;
-	j = g_position.y;
-	while (i <= g_position.x + g_tile_size)
-	{
-		j = g_position.y;
-		while (j <= g_position.y + g_tile_size)
-			j++;
-		i++;
-	}
 }
 
 void	ft_checkdirectionplayer(int i, int j)
@@ -78,7 +62,7 @@ void	dda(float X0, float Y0, float X1, float Y1, unsigned int long long str)
 	Y = Y0;
     while (i++ <= steps)
     {
-      	my_mlx_pixel_put(&g_img, X, Y, str);
+      	my_mlx_pixel_put(X, Y, str);
         X += Xinc;
         Y += Yinc;
     }
@@ -115,27 +99,24 @@ void	ft_draw_map(void)
 	int		i;
 	int		j;
 
-	i = 0;
-	while (g_la_map[i] != '\0')
+	i = -1;
+	while (g_la_map[++i] != '\0')
 	{
 		g_position.x = 0;
-		j = 0;
-		while (g_la_map[i][j] != '\0')
+		j = -1;
+		while (g_la_map[i][++j] != '\0')
 		{
-			if (g_la_map[i][j] == '1')
-				draw_tile();
 			if ((g_la_map[i][j] == 'N' || g_la_map[i][j] == 'W'
-		|| g_la_map[i][j] == 'S' || g_la_map[i][j] == 'E') && g_check_playerdraw == 0)
+			|| g_la_map[i][j] == 'S' || g_la_map[i][j] == 'E')
+			&& g_check_playerdraw == 0)
 			{
 				ft_checkdirectionplayer(i, j);
 				draw_player();
 				g_check_playerdraw++;
 			}
 			g_position.x = g_position.x + g_tile_size;
-			j++;
 		}
 		g_position.y = g_position.y + g_tile_size;
-		i++;
 	}
 	if (g_check_playerdraw == 0)
 		ft_error_massege("Error\nposition player not found");
@@ -237,6 +218,11 @@ int		direction_player(void)
 	ft_draw_player();
 	to_sprite();
 	mlx_put_image_to_window(g_mlx_ptr, g_win_ptr, g_img.img, 0, 0);
+	if (g_map.save == 1)
+	{
+		save_bmp();
+		exit(0);
+	}
 	return (0);
 }
 
@@ -261,25 +247,25 @@ void	ft_initia_texture(void)
 {
 	g_we.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.we,
 					&g_we.width, &g_we.height);
-	if (g_we.img == NULL)
+	if (g_we.img == 0)
 		ft_error_massege("Texture west est vide !!");
 	g_textures.we = (int *)mlx_get_data_addr(g_we.img,
 		&g_we.bits_per_pixel, &g_we.line_length, &g_we.endian);
 	g_so.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.so,
 					&g_so.width, &g_so.height);
-	if (g_so.img == NULL)
+	if (g_so.img == 0)
 		ft_error_massege("Texture south est vide !!");
 	g_textures.so = (int *)mlx_get_data_addr(g_so.img,
 		&g_so.bits_per_pixel, &g_so.line_length, &g_so.endian);
 	g_no.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.no,
 					&g_no.width, &g_no.height);
-	if (g_no.img == NULL)
+	if (g_no.img == 0)
 		ft_error_massege("Texture north est vide !!");
 	g_textures.no = (int *)mlx_get_data_addr(g_no.img,
 		&g_no.bits_per_pixel, &g_no.line_length, &g_no.endian);
 	g_ea.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.ea,
 					&g_ea.width, &g_ea.height);
-	if (g_ea.img == NULL)
+	if (g_ea.img == 0)
 		ft_error_massege("Texture east est vide !!");
 	g_textures.ea = (int *)mlx_get_data_addr(g_ea.img,
 		&g_ea.bits_per_pixel, &g_ea.line_length, &g_ea.endian);

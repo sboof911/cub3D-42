@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 15:38:28 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/05 12:46:39 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/08 14:16:09 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -355,7 +355,7 @@ void	ft_error_zero(void)
 
 void	ft_addspace3(int i, int k, int j, char **stre)
 {
-	int		l;
+	size_t	l;
 
 	l = 0;
 	while (j < g_highest_ligne + 2)
