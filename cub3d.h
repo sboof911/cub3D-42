@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/08 16:58:12 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/08 18:02:15 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ float	g_fov;
 int		g_tile_size;
 int		g_turn_direction;
 int		g_walk_direction;
+int		g_side_direction;
 float	g_rotation;
 int		g_key_pud;
 int		g_s_count;

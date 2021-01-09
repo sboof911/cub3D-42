@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:55:59 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/08 17:26:28 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/08 17:50:42 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	ft_check_texture(int toffset_x, int toffset_y, int i, float y)
 	else
 	{
 		if (g_ray.facingup)
-			color = g_textures.no[d];
-		else
 			color = g_textures.so[d];
+		else
+			color = g_textures.no[d];
 	}
 	my_mlx_pixel_put(i, y, color);
 }

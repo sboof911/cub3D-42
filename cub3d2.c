@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 11:38:43 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/08 16:25:00 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/09 09:41:34 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,10 +134,18 @@ int		nowallx(int key)
 		s = -20;
 	if (key == 1)
 		s = 20;
-	x = g_player.x + (s * cos(g_rotation * (M_PI / 180)));
+	x = g_player.x + (s * cos((g_rotation + g_side_direction) * (M_PI / 180)));
 	y = g_player.y;
 	i = y / g_tile_size;
 	j = x / g_tile_size;
+	if (i < 0)
+		i = 0;
+	if (j < 0)
+		j = 0;
+	if (i > g_high_colone)
+		i = g_high_colone;
+	if (j > g_highest_ligne)
+		j = g_highest_ligne;
 	if (g_la_map[i][j] == '1' || g_la_map[i][j] == ' ' || g_la_map[i][j] == '2')
 		return (0);
 	return (1);
@@ -156,9 +164,17 @@ int		nowally(int key)
 	if (key == 1)
 		s = 20;
 	x = g_player.x;
-	y = g_player.y + (s * sin(g_rotation * (M_PI / 180)));
+	y = g_player.y + (s * sin((g_rotation + g_side_direction) * (M_PI / 180)));
 	i = y / g_tile_size;
 	j = x / g_tile_size;
+	if (i < 0)
+		i = 0;
+	if (j < 0)
+		j = 0;
+	if (i > g_high_colone)
+		i = g_high_colone;
+	if (j > g_highest_ligne)
+		j = g_highest_ligne;
 	if (g_la_map[i][j] == '1' || g_la_map[i][j] == ' ' || g_la_map[i][j] == '2')
 		return (0);
 	return (1);
@@ -166,8 +182,10 @@ int		nowally(int key)
 
 int		key_released(int key)
 {
-	if (key == 123 || key == 124 || key == 2 || key == 0)
+	if (key == 2 || key == 0)
 		g_turn_direction = 0;
+	if (key == 123 || key == 124)
+		g_side_direction = 0;
 	if (key == 1 || key == 13)
 		g_walk_direction = 0;
 	return (0);
@@ -178,28 +196,56 @@ void	ft_draw_player(void)
 	if (g_walk_direction == -1 || g_walk_direction == 1)
 	{
 		if (nowallx(g_walk_direction) == 1)
-			g_player.x += 8 * g_walk_direction * cos(g_rotation * (M_PI / 180));
+			g_player.x += 8 * g_walk_direction *
+			cos(g_rotation * (M_PI / 180));
 		if (nowally(g_walk_direction) == 1)
-			g_player.y += 8 * g_walk_direction * sin(g_rotation * (M_PI / 180));
+			g_player.y += 8 * g_walk_direction *
+			sin(g_rotation * (M_PI / 180));
+	}
+	if (g_side_direction == -90 || g_side_direction == 90)
+	{
+		if (nowallx(1) == 1)
+			g_player.x += 8 *
+			cos((g_rotation + g_side_direction) * (M_PI / 180));
+		if (nowally(1) == 1)
+			g_player.y += 8 *
+			sin((g_rotation + g_side_direction) * (M_PI / 180));
 	}
 	draw_player();
 	if (g_key == 1)
 		exit(0);
 }
 
+void	help_key(int key)
+{
+	if (key == 123 || key == 124)
+	{
+		if (key == 123)
+			g_side_direction = -90;
+		if (key == 124)
+			g_side_direction = 90;
+	}
+}
+
 int		key_pressed(int key)
 {
-	if (key == 123 || key == 0 || key == 124 || key == 2)
+	if (key == 0 || key == 2)
 	{
 		g_key_prl1 = 1;
-		if (key == 123 || key == 0)
+		if (key == 0)
 			g_turn_direction = -1;
-		if (key == 124 || key == 2)
+		if (key == 2)
 			g_turn_direction = 1;
+	}
+	if (key == 123 || key == 124)
+	{
+		if (key == 123)
+			g_side_direction = -90;
+		if (key == 124)
+			g_side_direction = 90;
 	}
 	if (key == 1 || key == 13)
 	{
-		g_key_pud1 = 1;
 		if (key == 1)
 			g_walk_direction = -1;
 		if (key == 13)
@@ -231,7 +277,6 @@ void	initialisation(void)
 	g_fov = 60;
 	g_key = 0;
 	g_key_prl1 = 0;
-	g_key_pud1 = 0;
 	g_tile_size = 64;
 	g_check_playerdraw = 0;
 	g_player.x = 0;
@@ -241,6 +286,7 @@ void	initialisation(void)
 	g_walk_direction = 0;
 	g_turn_direction = 0;
 	g_map.save = 0;
+	g_side_direction = 0;
 }
 
 void	ft_initia_texture(void)
