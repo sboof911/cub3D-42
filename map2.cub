@@ -1,4 +1,8 @@
-R 999 999
+
+
+
+
+R    1920        1080 
 
 
 
@@ -9,11 +13,19 @@ SO ./path_to_the_south_texture.xpm
 WE ./path_to_the_west_texture.xpm
 EA ./path_to_the_east_texture.xpm
 F 209,0,28
-S ./////path_to_the_sprite_texture.xpm
+S ./path_to_the_sprite_texture.xpm
 
 C 0,191,255
 
-           
- 1   
-1N1   
- 1    
+
+
+1111111
+1000001
+111N001
+1000001
+1111111
+
+
+
+
+1111

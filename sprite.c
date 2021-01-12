@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 15:25:13 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/08 12:08:42 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/10 15:57:30 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void    init_sprite(void)
     i = -1;
     g_sprite  = malloc(sizeof(t_sprite) * (g_s_count));
     g_texture.img = mlx_xpm_file_to_image(g_mlx_ptr, g_map.s, &g_textures.width, &g_textures.height);
+	free(g_map.s);
 	if (g_texture.img == 0)
 		ft_error_massege("Error\nSprite est vide");
     g_texture.addr = mlx_get_data_addr(g_texture.img, &g_texture.bits_per_pixel, &g_texture.line_length, &g_texture.endian);

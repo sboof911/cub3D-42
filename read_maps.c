@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 15:38:28 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/08 17:35:01 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/11 15:08:11 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_error_massege(char *str)
 
 int		ft_check_param(void)
 {
-	if (g_map.x && g_map.y && g_map.we[0] != 0 && g_map.no[0] != 0
+	if (g_map.x >= 0 && g_map.y >= 0 && g_map.we[0] != 0 && g_map.no[0] != 0
 		&& g_map.so[0] != 0 && g_map.ea[0] != 0 && g_floor.a >= 0
 		&& g_floor.b >= 0 && g_floor.c >= 0 && g_ceil.a >= 0
 		&& g_ceil.b >= 0 && g_ceil.c >= 0)
@@ -53,14 +53,31 @@ int		ft_arrayisdigit(char *str)
 	return (1);
 }
 
-void	ft_regle_reso(void)
+void	ft_regle_reso(char **words)
 {
-	if (g_map.x > 2560)
-		g_map.x = 2560;
-	if (g_map.y > 1440)
-		g_map.y = 1440;
-	if (g_map.x < 100 || g_map.y < 100)
-		ft_error_massege("Error\nResolution super minim veuillez l augmenter");
+	if (words[0][0] == 'R' && words[0][1] == '\0')
+	{
+		if (ft_arrayisdigit(words[1]) == 1)
+		{
+			if (ft_strlen(words[1]) > 4)
+				g_map.x = 2560;
+			else
+				g_map.x = ft_atoi(words[1]);
+		}
+		else
+			ft_error_massege("Error\nLa Resolution n est pas compatible");
+		if (ft_arrayisdigit(words[2]) == 1)
+		{
+			if (ft_strlen(words[2]) > 4)
+				g_map.y = 1440;
+			else
+				g_map.y = ft_atoi(words[2]);
+		}
+		else
+			ft_error_massege("Error\nLa Resolution n est pas compatible");
+	}
+	else
+		ft_error_massege("Error\nmal carractere en resolution");
 }
 
 void	ft_traitement_resolution(char *line)
@@ -74,15 +91,11 @@ void	ft_traitement_resolution(char *line)
 	words = ft_split(line, ' ');
 	if (c_w != 3)
 		ft_error_massege("Error\nNombre d'argument n est pas compatible");
-	if (ft_arrayisdigit(words[1]) == 1)
-		g_map.x = ft_atoi(words[1]);
-	else
-		ft_error_massege("Error\nLa Resolution n est pas compatible");
-	if (ft_arrayisdigit(words[2]) == 1)
-		g_map.y = ft_atoi(words[2]);
-	else
-		ft_error_massege("Error\nLa Resolution n est pas compatible");
-	ft_regle_reso();
+	ft_regle_reso(words);
+	if (g_map.x > 2560)
+		g_map.x = 2560;
+	if (g_map.y > 1440)
+		g_map.y = 1440;
 	g_compt.r++;
 	ft_free(words, ft_tablen(words));
 }
@@ -109,46 +122,37 @@ char	*ft_alloue_free(char *s1, char *s2)
 	return (s1);
 }
 
-void	ft_help_path(char **words)
+char	*ft_help_path(char *line, int j)
 {
-	if (ft_checkispath(words[1]) == 1)
-	{
-		if (words[0][0] == 'W' && words[0][1] == 'E'
-			&& words[0][2] == '\0' && (++g_compt.we))
-			g_map.we = ft_alloue_free(g_map.we, words[1]);
-		else if (words[0][0] == 'N' && words[0][1] == 'O'
-				&& words[0][2] == '\0' && (++g_compt.no))
-			g_map.no = ft_alloue_free(g_map.no, words[1]);
-		else if (words[0][0] == 'E' && words[0][1] == 'A'
-				&& words[0][2] == '\0' && (++g_compt.ea))
-			g_map.ea = ft_alloue_free(g_map.ea, words[1]);
-		else if (words[0][0] == 'S' && words[0][1] == 'O'
-				&& words[0][2] == '\0' && (++g_compt.so))
-			g_map.so = ft_alloue_free(g_map.so, words[1]);
-		else if (words[0][0] == 'S' && words[0][1] == '\0'
-				&& (++g_compt.s))
-			g_map.s = ft_alloue_free(g_map.s, words[1]);
-		else
-			ft_error_massege("Error\nSyntax ERROR");
-	}
+	char	*words;
+
+	if (j == 1)
+		words = line + 3;
+	else
+		words = line + 2;
+	if (ft_checkispath(words) == 0)
+		ft_error_massege("Error\nPath incorrect");
+	return (words);
 }
 
 void	ft_traitement_path(char *line)
 {
-	int		c_w;
-	char	**words;
-	int		i;
-
-	i = 0;
-	c_w = ft_count_words(line, ' ');
-	words = ft_split(line, ' ');
-	if (c_w != 2)
-		ft_error_massege("Error\nNombre d'argument n est pas compatible");
-	if (ft_strlen(words[0]) < 3)
-		ft_help_path(words);
+	if (line[0] == 'W' && line[1] == 'E' && line[2] == ' '
+		&& (++g_compt.we))
+		g_map.we = ft_alloue_free(g_map.we, ft_help_path(line, 1));
+	else if (line[0] == 'N' && line[1] == 'O' && line[2] == ' '
+		&& (++g_compt.no))
+		g_map.no = ft_alloue_free(g_map.no, ft_help_path(line, 1));
+	else if (line[0] == 'E' && line[1] == 'A' && line[2] == ' '
+		&& (++g_compt.ea))
+		g_map.ea = ft_alloue_free(g_map.ea, ft_help_path(line, 1));
+	else if (line[0] == 'S' && line[1] == 'O' && line[2] == ' '
+		&& (++g_compt.so))
+		g_map.so = ft_alloue_free(g_map.so, ft_help_path(line, 1));
+	else if (line[0] == 'S' && line[1] == ' ')
+		g_map.s = ft_alloue_free(g_map.s, ft_help_path(line, 0));
 	else
-		ft_error_massege("Error\nSyntax ERROR");
-	ft_free(words, ft_tablen(words));
+		ft_error_massege("Error\nQuelque chose ne vas pas avec les param");
 }
 
 void	ft_help_2_colors(char s, int a, int b, int c)
@@ -204,7 +208,7 @@ void	ft_help_colors(char **words, char s)
 	c_w = ft_count_words(words[1], ',');
 	colors = ft_split(words[1], ',');
 	if (c_w != 3)
-		ft_error_massege("Error\n Nombre d'argument n est pas compatible");
+		ft_error_massege("Error\n Nombre d'arg n est pas compat en couleur");
 	ft_check_virgule(words[1]);
 	if (ft_arrayisdigit(colors[0]) + ft_arrayisdigit(colors[1])
 		+ ft_arrayisdigit(colors[2]) == 3)
@@ -239,7 +243,7 @@ void	ft_traitement_colors(char *line)
 	ft_free(words, ft_tablen(words));
 }
 
-void	ft_check_double(void)
+int		ft_check_double(void)
 {
 	if (g_compt.r > 1)
 		ft_error_massege("Error\nplus d une resolution");
@@ -257,6 +261,7 @@ void	ft_check_double(void)
 		ft_error_massege("Error\nplus d une couleur F");
 	if (g_compt.c > 1)
 		ft_error_massege("Error\nplus d une couleur C");
+	return (1);
 }
 
 void	ft_traitement_config(char *line)
@@ -535,6 +540,21 @@ void	ft_get_error_map(void)
 	ft_count_sprite();
 }
 
+void	ft_error_separation(char *line)
+{
+	int		i;
+
+	i = 0;
+	while (line[i] != '\0')
+	{
+		if (line[i] == '1')
+			g_compt_d++;
+		i++;
+	}
+	if (g_compt_d > 0 && line[0] == '\0')
+		ft_error_massege("Error\nmap separer");
+}
+
 void	ft_traitement_map(char *line, int j)
 {
 	char	*str;
@@ -545,6 +565,7 @@ void	ft_traitement_map(char *line, int j)
 		g_join = ft_strdup("");
 	if (line && j != 0)
 	{
+		ft_error_separation(line);
 		str = ft_strjoin(g_join, line);
 		free(g_join);
 		g_join = ft_strjoin(str, "\n");
@@ -578,8 +599,8 @@ void	ft_traitement(char *line, int j)
 
 void	ft_initialisation(void)
 {
-	g_map.x = 0;
-	g_map.y = 0;
+	g_map.x = -1;
+	g_map.y = -1;
 	g_map.we = ft_strdup("");
 	g_map.no = ft_strdup("");
 	g_map.so = ft_strdup("");
@@ -600,6 +621,7 @@ void	ft_initialisation(void)
 	g_compt.we = 0;
 	g_compt.r = 0;
 	g_s_count = 0;
+	g_compt_d = 0;
 }
 
 void	ft_readmap(void)
@@ -623,5 +645,9 @@ void	ft_readmap(void)
 		if (i == 0)
 			break ;
 	}
+	if (ft_check_param() == 0)
+		ft_error_massege("Error\nParram non complet !");
+	if (!g_la_map)
+		ft_error_massege("Error\nPas de map!");
 	free(g_map.cub);
 }

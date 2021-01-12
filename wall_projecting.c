@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/16 12:55:59 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/08 17:50:42 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/11 10:24:02 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	ft_textures(int i, float walltop, float wallbot, float wallstripheight)
 		textureoffset_x = (int)g_tab[i][2] % g_tile_size;
 	else
 		textureoffset_x = (int)g_tab[i][1] % g_tile_size;
+	g_dda.compt = 1;
+	dda(i, 0, i, walltop);
 	while (y < wallbot)
 	{
 		distancefromtop = y + (wallstripheight / 2) - (g_map.y / 2);
@@ -82,9 +84,9 @@ float	ft_help_render(float ran, float distprojep, float rotan, float wallsh)
 			wallbotpixel = g_map.y;
 		if (walltoppixel < 0)
 			walltoppixel = 0;
-		dda(i, 0, i, walltoppixel, g_ceil.color);
 		ft_textures(i, walltoppixel, wallbotpixel, wallsh);
-		dda(i, wallbotpixel, i, g_map.y, g_floor.color);
+		g_dda.compt = 2;
+		dda(i, wallbotpixel, i, g_map.y);
 		ran += (g_fov * rotan) / g_map.x;
 	}
 	return (ran);

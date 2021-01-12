@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/08 18:02:15 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/11 15:06:33 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CUB3D_H
 
 # include <mlx.h>
+# include "../minilibx_mms_20200219/mlx.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
@@ -124,6 +125,17 @@ typedef	struct	s_bmp_header
 	u_int32_t	importantcolors;
 }				t_bmp_file;
 
+typedef struct	s_dda
+{
+	float	xinc;
+	float	yinc;
+	int		dx;
+	int		dy;
+	int		steps;
+	int		compt;
+}				t_dda;
+
+t_dda			g_dda;
 t_bmp_file		g_bmp;
 t_check			g_compt;
 t_wallhit		g_wallhit;
@@ -147,7 +159,6 @@ float	g_fov;
 int		g_tile_size;
 int		g_turn_direction;
 int		g_walk_direction;
-int		g_side_direction;
 float	g_rotation;
 int		g_key_pud;
 int		g_s_count;
@@ -169,9 +180,10 @@ float	g_w_width;
 float	g_w_height;
 int		g_numberofrays;
 float	g_tab[5028][4];
+int		g_compt_d;
 
 void	my_mlx_pixel_put(int x, int y, int color);
-void	dda(float X0, float Y0, float X1, float Y1, unsigned int long long str);
+void	dda(float x0, float y0, float x1, float y1);
 float	cddp(float x1, float y1, float x2, float y2);
 void	ft_error_massege(char *str);
 int		ft_check_param(void);
@@ -179,7 +191,7 @@ int		ft_arrayisdigit(char *str);
 void	ft_traitement_resolution(char *line);
 int		ft_checkispath(char *str);
 char	*ft_alloue_free(char *s1, char *s2);
-void	ft_help_path(char **words);
+char	*ft_help_path(char *line, int j);
 void	ft_traitement_path(char *line);
 void	ft_help_2_colors(char s, int a, int b, int c);
 void	ft_help_colors(char **words, char s);

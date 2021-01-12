@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 11:38:43 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/09 09:41:34 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/11 14:34:51 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,33 +39,33 @@ int		abs(int n)
 	return ((n > 0) ? n : (n * (-1)));
 }
 
-void	dda(float X0, float Y0, float X1, float Y1, unsigned int long long str)
+void	dda(float x0, float y0, float x1, float y1)
 {
-    int		dx;
-    int		dy;
-    int		steps;
-    float	Xinc;
-    float	Yinc;
-    float	X;
-    float	Y;
+	float	x;
+	float	y;
 	int		i;
+	int		str;
 
 	i = 0;
-	dx = X1 - X0;
-	dy = Y1 - Y0;
-	steps = abs(dx) > abs(dy) ? abs(dx) : abs(dy);
-	if (steps < 1)
-		steps = 1;
-	Xinc = dx / (float) steps;
-	Yinc = dy / (float) steps;
-	X = X0;
-	Y = Y0;
-    while (i++ <= steps)
-    {
-      	my_mlx_pixel_put(X, Y, str);
-        X += Xinc;
-        Y += Yinc;
-    }
+	g_dda.dx = x1 - x0;
+	g_dda.dy = y1 - y0;
+	g_dda.steps = abs(g_dda.dx) > abs(g_dda.dy) ? abs(g_dda.dx) : abs(g_dda.dy);
+	if (g_dda.compt == 1)
+		str = g_ceil.color;
+	if (g_dda.compt == 2)
+		str = g_floor.color;
+	if (g_dda.steps < 1)
+		g_dda.steps = 1;
+	g_dda.xinc = g_dda.dx / (float)g_dda.steps;
+	g_dda.yinc = g_dda.dy / (float)g_dda.steps;
+	x = x0;
+	y = y0;
+	while (i++ <= g_dda.steps)
+	{
+		my_mlx_pixel_put(x, y, str);
+		x += g_dda.xinc;
+		y += g_dda.yinc;
+	}
 }
 
 void	draw_player(void)
@@ -134,18 +134,14 @@ int		nowallx(int key)
 		s = -20;
 	if (key == 1)
 		s = 20;
-	x = g_player.x + (s * cos((g_rotation + g_side_direction) * (M_PI / 180)));
+	x = g_player.x + (s * cos(g_rotation * (M_PI / 180)));
 	y = g_player.y;
 	i = y / g_tile_size;
 	j = x / g_tile_size;
-	if (i < 0)
-		i = 0;
-	if (j < 0)
-		j = 0;
-	if (i > g_high_colone)
-		i = g_high_colone;
-	if (j > g_highest_ligne)
-		j = g_highest_ligne;
+	i = i < 0 ? 0 : i;
+	j = j < 0 ? 0 : j;
+	i = i > g_high_colone ? g_high_colone : i;
+	j = j > g_highest_ligne ? g_highest_ligne : j;
 	if (g_la_map[i][j] == '1' || g_la_map[i][j] == ' ' || g_la_map[i][j] == '2')
 		return (0);
 	return (1);
@@ -159,22 +155,19 @@ int		nowally(int key)
 	int	x;
 	int	y;
 
+	s = 0;
 	if (key == -1)
 		s = -20;
 	if (key == 1)
 		s = 20;
 	x = g_player.x;
-	y = g_player.y + (s * sin((g_rotation + g_side_direction) * (M_PI / 180)));
+	y = g_player.y + (s * sin(g_rotation * (M_PI / 180)));
 	i = y / g_tile_size;
 	j = x / g_tile_size;
-	if (i < 0)
-		i = 0;
-	if (j < 0)
-		j = 0;
-	if (i > g_high_colone)
-		i = g_high_colone;
-	if (j > g_highest_ligne)
-		j = g_highest_ligne;
+	i = i < 0 ? 0 : i;
+	j = j < 0 ? 0 : j;
+	i = i > g_high_colone ? g_high_colone : i;
+	j = j > g_highest_ligne ? g_highest_ligne : j;
 	if (g_la_map[i][j] == '1' || g_la_map[i][j] == ' ' || g_la_map[i][j] == '2')
 		return (0);
 	return (1);
@@ -182,10 +175,8 @@ int		nowally(int key)
 
 int		key_released(int key)
 {
-	if (key == 2 || key == 0)
+	if (key == 123 || key == 124 || key == 0 || key == 2)
 		g_turn_direction = 0;
-	if (key == 123 || key == 124)
-		g_side_direction = 0;
 	if (key == 1 || key == 13)
 		g_walk_direction = 0;
 	return (0);
@@ -202,47 +193,20 @@ void	ft_draw_player(void)
 			g_player.y += 8 * g_walk_direction *
 			sin(g_rotation * (M_PI / 180));
 	}
-	if (g_side_direction == -90 || g_side_direction == 90)
-	{
-		if (nowallx(1) == 1)
-			g_player.x += 8 *
-			cos((g_rotation + g_side_direction) * (M_PI / 180));
-		if (nowally(1) == 1)
-			g_player.y += 8 *
-			sin((g_rotation + g_side_direction) * (M_PI / 180));
-	}
 	draw_player();
 	if (g_key == 1)
 		exit(0);
 }
 
-void	help_key(int key)
-{
-	if (key == 123 || key == 124)
-	{
-		if (key == 123)
-			g_side_direction = -90;
-		if (key == 124)
-			g_side_direction = 90;
-	}
-}
-
 int		key_pressed(int key)
 {
-	if (key == 0 || key == 2)
+	if (key == 123 || key == 124 || key == 0 || key == 2)
 	{
 		g_key_prl1 = 1;
-		if (key == 0)
+		if (key == 123 || key == 0)
 			g_turn_direction = -1;
-		if (key == 2)
+		if (key == 124 || key == 2)
 			g_turn_direction = 1;
-	}
-	if (key == 123 || key == 124)
-	{
-		if (key == 123)
-			g_side_direction = -90;
-		if (key == 124)
-			g_side_direction = 90;
 	}
 	if (key == 1 || key == 13)
 	{
@@ -286,7 +250,14 @@ void	initialisation(void)
 	g_walk_direction = 0;
 	g_turn_direction = 0;
 	g_map.save = 0;
-	g_side_direction = 0;
+}
+
+void	ft_free_textures(void)
+{
+	free(g_map.we);
+	free(g_map.so);
+	free(g_map.no);
+	free(g_map.ea);
 }
 
 void	ft_initia_texture(void)
@@ -315,6 +286,7 @@ void	ft_initia_texture(void)
 		ft_error_massege("Texture east est vide !!");
 	g_textures.ea = (int *)mlx_get_data_addr(g_ea.img,
 		&g_ea.bits_per_pixel, &g_ea.line_length, &g_ea.endian);
+	ft_free_textures();
 }
 
 int		ft_exit_x(void)
@@ -363,4 +335,5 @@ int		main(int argc, char **argv)
 	init_sprite();
 	mlx_loop_hook(g_mlx_ptr, direction_player, (void *)0);
 	mlx_loop(g_mlx_ptr);
+	system("leaks checker");
 }
