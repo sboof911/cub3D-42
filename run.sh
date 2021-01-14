@@ -1,1 +1,0 @@
-gcc -Wall -Werror -Wextra -I /usr/local/include *.c -L /usr/local/lib/ -lmlx -framework OpenGL -g -framework Appkit; ./a.out maps.cub

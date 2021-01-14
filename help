@@ -1,2 +1,0 @@
-gcc *.c -L/usr/X11/lib /usr/X11/lib/libmlx.a -lXext -lX11 -lm
-
