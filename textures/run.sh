@@ -1,1 +1,0 @@
-gcc -Wall -Werror -Wextra *.c ./outils/*.c ./read_map/*.c -I /usr/local/include -L /usr/local/lib/ -lmlx -framework OpenGL -g -framework Appkit
