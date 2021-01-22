@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 14:35:21 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/15 09:46:19 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/22 12:37:00 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,17 @@ int		main(int argc, char **argv)
 	ft_readmap();
 	g_mlx_ptr = mlx_init();
 	g_win_ptr = mlx_new_window(g_mlx_ptr, g_map.x, g_map.y, "sboof");
-	g_img.img = mlx_new_image(g_mlx_ptr, g_map.x, g_map.y);
-	g_img.addr = mlx_get_data_addr(g_img.img, &g_img.bits_per_pixel,
-				&g_img.line_length, &g_img.endian);
+	init_sprite();
 	ft_initia_texture();
+	if (g_map.save == 1)
+	{
+		direction_player();
+		save_bmp();
+		exit(1);
+	}
 	mlx_hook(g_win_ptr, 2, 0, key_pressed, (void *)0);
 	mlx_hook(g_win_ptr, 3, 0, key_released, (void *)0);
 	mlx_hook(g_win_ptr, 17, 0, ft_exit_x, (void *)0);
-	init_sprite();
 	mlx_loop_hook(g_mlx_ptr, direction_player, (void *)0);
 	mlx_loop(g_mlx_ptr);
 }

@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 18:15:31 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/15 09:50:09 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/22 12:36:54 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,17 +62,15 @@ int				key_pressed(int key)
 
 int				direction_player(void)
 {
-	mlx_destroy_image(g_mlx_ptr, g_img.img);
 	g_img.img = mlx_new_image(g_mlx_ptr, g_map.x, g_map.y);
+	g_img.addr = mlx_get_data_addr(g_img.img, &g_img.bits_per_pixel,
+			&g_img.line_length, &g_img.endian);
 	ft_draw_map();
 	ft_draw_player();
 	to_sprite();
 	mlx_put_image_to_window(g_mlx_ptr, g_win_ptr, g_img.img, 0, 0);
-	if (g_map.save == 1)
-	{
-		save_bmp();
-		exit(0);
-	}
+	if (!g_map.save)
+		mlx_destroy_image(g_mlx_ptr, g_img.img);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 15:38:28 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/13 18:00:10 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/18 11:58:24 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int		ft_check_param(void)
 	if (g_map.x >= 0 && g_map.y >= 0 && g_map.we[0] != 0 && g_map.no[0] != 0
 		&& g_map.so[0] != 0 && g_map.ea[0] != 0 && g_floor.a >= 0
 		&& g_floor.b >= 0 && g_floor.c >= 0 && g_ceil.a >= 0
-		&& g_ceil.b >= 0 && g_ceil.c >= 0)
+		&& g_ceil.b >= 0 && g_ceil.c >= 0 && g_map.s[0] != 0)
 		return (1);
 	return (0);
 }

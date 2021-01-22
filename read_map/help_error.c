@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/13 17:43:22 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/13 17:45:02 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/18 12:08:11 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	ft_error_colones(void)
 	i = 0;
 	while (g_la_map[i] != 0)
 	{
-		if (g_la_map[0][i] == ' ' || g_la_map[0][i] == '1')
+		if (g_la_map[i][0] == ' ' || g_la_map[i][0] == '1')
 			i++;
 		else
 			ft_error_massege("Error\n map non fermer");

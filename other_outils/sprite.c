@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 15:25:13 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/14 11:02:42 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/22 14:58:43 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,20 @@ void	init_sprite(void)
 	help_init_sprite(i, k);
 }
 
-void	to_sort(void)
+void	to_sort(int k)
 {
-	int				i;
-	int				j;
-	t_sprite		tmp;
+	int			i;
+	int			j;
+	t_sprite	tmp;
 
-	i = 0;
-	while (i < g_s_count - 1)
+	i = -1;
+	while (++k < g_s_count)
+	{
+		g_sprite[k].dist = sqrtf(((g_sprite[k].x) - g_player.x)
+			* ((g_sprite[k].x) - g_player.x) + ((g_sprite[k].y) - g_player.y)
+			* ((g_sprite[k].y) - g_player.y));
+	}
+	while (++i < g_s_count - 1)
 	{
 		j = i;
 		while (j < g_s_count - 1)
@@ -72,7 +78,6 @@ void	to_sort(void)
 			}
 			j++;
 		}
-		i++;
 	}
 }
 
@@ -85,12 +90,9 @@ void	to_sprite(void)
 	ray = g_rotation * (M_PI / 180);
 	k = -1;
 	angle = 0;
-	to_sort();
+	to_sort(k);
 	while (++k < g_s_count)
 	{
-		g_sprite[k].dist = sqrtf(((g_sprite[k].x) - g_player.x)
-			* ((g_sprite[k].x) - g_player.x) + ((g_sprite[k].y) - g_player.y)
-			* ((g_sprite[k].y) - g_player.y));
 		angle = atan2f(g_sprite[k].y - g_player.y, g_sprite[k].x - g_player.x);
 		while (angle - ray > M_PI)
 			angle -= 2 * M_PI;

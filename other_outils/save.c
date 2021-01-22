@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/08 14:35:20 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/13 18:30:00 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/22 10:57:49 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	write_colors(int fd)
 
 	i = 0;
 	j = 0;
-	color = (int*)g_img.addr;
+	color = (int *)g_img.addr;
 	if (!(colors = malloc(g_bmp.imagesize * sizeof(char))))
 		ft_error_massege("Error\nscreenshot issue");
 	while ((u_int32_t)i < g_bmp.imagesize / 4)

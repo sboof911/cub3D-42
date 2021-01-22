@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/04 11:38:43 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/15 09:44:35 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/15 12:33:21 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char	*ft_alloue_free(char *s1, char *s2)
 
 	str = ft_strjoin(s1, s2);
 	free(s1);
+	free(s2);
 	s1 = ft_strdup(str);
 	free(str);
 	return (s1);

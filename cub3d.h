@@ -6,7 +6,7 @@
 /*   By: amaach <amaach@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/13 13:46:40 by amaach            #+#    #+#             */
-/*   Updated: 2021/01/15 09:43:37 by amaach           ###   ########.fr       */
+/*   Updated: 2021/01/22 14:10:12 by amaach           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <stdlib.h>
-# include <stdio.h>
 
 typedef struct	s_dimention {
 	int			x;
@@ -221,7 +220,7 @@ int				nowall(int key);
 float			renderprojectionwall(float k, float rotationangle);
 void			draw_sprite(int id);
 void			to_sprite(void);
-void			to_sort(void);
+void			to_sort(int k);
 void			init_sprite(void);
 void			save_bmp(void);
 void			write_colors(int fd);
@@ -246,4 +245,5 @@ void			draw_player(void);
 void			ft_checkdirectionplayer(int i, int j);
 void			help_draw_sprite(float size, int *tabe, int id, int i);
 char			*ft_strtrim(char const *s1, char const *set);
+void			ft_bzero(void *s, size_t n);
 #endif
